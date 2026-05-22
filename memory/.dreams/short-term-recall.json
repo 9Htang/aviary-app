@@ -1,0 +1,288 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-22T20:21:48.583Z",
+  "entries": {
+    "memory:memory/2026-05-20.md:1:36": {
+      "key": "memory:memory/2026-05-20.md:1:36",
+      "path": "memory/2026-05-20.md",
+      "startLine": 1,
+      "endLine": 36,
+      "source": "memory",
+      "snippet": "# 2026-05-20 日志 ## 重大事件 ### 鸟舍管理系统建立 小豆要搭建本地鹦鹉鸟舍管理系统，技术栈为 **SQLite + Express.js + EJS**。 数据库文件：`aviary/aviary.db`，网页服务：`aviary/server.js` 访问地址：http://127.0.0.1:3456 （局域网手机 http://192.168.10.9:3456） ### 数据库表结构 - species（品种） - birds（个体鸟：含 father_id/mother_id 自引用谱系、ring_number UNIQUE、status、breeding_status、source、image_path） - mutations（基因名 + 遗传类型） - bird_mutations（个体基因型） - pairings（配对记录，含 start_date/status/male_id/female_id） - breeding_events / offspring / relationship_cache ### 配对状态（最终版） 未配对 / 不可配对 / 已配对 ### 来源（最终版） 外来 / 自繁育 / 未知 ### 遗传类型体系 显性遗传 / 隐性遗传 / 性联遗传 / 不完全显性 / 多基因遗传 / 未知 ### 牡丹鹦鹉基因库（18项，来自 CSV） - 显性：派特、花桃 - 不完全显性：金顶、紫罗兰、墨色 - 隐性：百趴、深华、浅华、边化、金面、白面、蓝色、松石色、浅绿色 - 性联：闪光、肉桂、黄化 - 多基因：",
+      "recallCount": 12,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 5.87404708713293,
+      "maxScore": 0.5791087567806243,
+      "firstRecalledAt": "2026-05-20T08:02:02.509Z",
+      "lastRecalledAt": "2026-05-22T20:21:48.583Z",
+      "queryHashes": [
+        "edb872f7b628",
+        "348f88f3f392",
+        "cbacaa7383d5",
+        "47e1a9d69967",
+        "ef2f05513e24",
+        "5fe4c658c639",
+        "10adb40129f7",
+        "1c1d440d246a",
+        "d3b9efe55ec5",
+        "f8151cfc9b15",
+        "1aff7fe510d6",
+        "421d20b9c8e4"
+      ],
+      "recallDays": [
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-23"
+      ],
+      "conceptTags": [
+        "express.js",
+        "aviary/aviary.db",
+        "aviary/server.js",
+        "127.0.0.1",
+        "192.168.10.9",
+        "father-id/mother-id",
+        "ring-number",
+        "breeding-status"
+      ]
+    },
+    "memory:memory/2026-05-20.md:30:57": {
+      "key": "memory:memory/2026-05-20.md:30:57",
+      "path": "memory/2026-05-20.md",
+      "startLine": 30,
+      "endLine": 57,
+      "source": "memory",
+      "snippet": "- 隐性：百趴、深华、浅华、边化、金面、白面、蓝色、松石色、浅绿色 - 性联：闪光、肉桂、黄化 - 多基因：长羽 ### 已有数据：独脚一家三口 - NULL1 独脚 ♂ 绿花桃 外来 已配对（配偶：丧彪） - NULL4 丧彪 ♀ 松底美桂闪 外来 已配对（配偶：独脚） - NULL3 薄荷 ♀ 薄荷绿金顶 自繁育 未配对（父母：独脚×丧彪） ### 网站功能 - 卡片式首页（含加载更多、图片懒加载） - 按 ID/脚环/名字 搜索 - 详情页：信息、基因、子女、配对历史、当前配偶 - 新增鸟只：品种选单、基因勾选（按品种分组）、日期选择器、性别自动切换性联基因选项 - 图片裁切上传（CropperJS 3:4 竖版，最长边 400px，JPEG 60%） - 编辑鸟只：修改配对状态时自动弹窗选配偶 - 年龄自动计算（8个月以下/4年以上 → 不宜配对，红色标记） - 编辑页返回首页自动刷新（no-store + unload 防止 bfcache） ### 配置位置 主配置：`C:\\Users\\Cwb\\.openclaw\\openclaw.json` 工作区：`C:\\Users\\Cwb\\.openclaw\\workspace` 网页应用：`workspace/aviary/` ### 关键命令 - 启动服务：`cd aviary && node server.js` - 查鸟：`node lookup.js <脚环/名字>` - 数据库文件：`aviary/aviary.db`",
+      "recallCount": 14,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 6.737175455689431,
+      "maxScore": 0.527587279677391,
+      "firstRecalledAt": "2026-05-20T08:02:02.509Z",
+      "lastRecalledAt": "2026-05-22T20:21:48.583Z",
+      "queryHashes": [
+        "edb872f7b628",
+        "348f88f3f392",
+        "cbacaa7383d5",
+        "47e1a9d69967",
+        "ef2f05513e24",
+        "5fe4c658c639",
+        "58d2fca84a40",
+        "10adb40129f7",
+        "1c1d440d246a",
+        "d3b9efe55ec5",
+        "df948240d423",
+        "f8151cfc9b15",
+        "1aff7fe510d6",
+        "421d20b9c8e4"
+      ],
+      "recallDays": [
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-23"
+      ],
+      "conceptTags": [
+        "id/脚环/名字",
+        "8个月以下/4年以上",
+        "no-store",
+        "openclaw.json",
+        "workspace/aviary",
+        "server.js",
+        "lookup.js",
+        "脚环/名字"
+      ]
+    },
+    "memory:memory/2026-05-20.md:48:59": {
+      "key": "memory:memory/2026-05-20.md:48:59",
+      "path": "memory/2026-05-20.md",
+      "startLine": 48,
+      "endLine": 59,
+      "source": "memory",
+      "snippet": "### 配置位置 主配置：`C:\\Users\\Cwb\\.openclaw\\openclaw.json` 工作区：`C:\\Users\\Cwb\\.openclaw\\workspace` 网页应用：`workspace/aviary/` ### 关键命令 - 启动服务：`cd aviary && node server.js` - 查鸟：`node lookup.js <脚环/名字>` - 数据库文件：`aviary/aviary.db` - 迁移数据库用 migrate*.js 脚本（注意不要用 taskkill 全局杀 node）",
+      "recallCount": 12,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 5.652287808060646,
+      "maxScore": 0.5139369338750839,
+      "firstRecalledAt": "2026-05-20T08:02:02.509Z",
+      "lastRecalledAt": "2026-05-22T20:13:01.721Z",
+      "queryHashes": [
+        "edb872f7b628",
+        "348f88f3f392",
+        "cbacaa7383d5",
+        "47e1a9d69967",
+        "ef2f05513e24",
+        "5fe4c658c639",
+        "58d2fca84a40",
+        "10adb40129f7",
+        "1c1d440d246a",
+        "d3b9efe55ec5",
+        "f8151cfc9b15",
+        "1aff7fe510d6"
+      ],
+      "recallDays": [
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22",
+        "2026-05-23"
+      ],
+      "conceptTags": [
+        "openclaw.json",
+        "workspace/aviary",
+        "server.js",
+        "lookup.js",
+        "脚环/名字",
+        "aviary/aviary.db",
+        "配置",
+        "位置"
+      ]
+    },
+    "memory:memory/2026-05-19.md:1:11": {
+      "key": "memory:memory/2026-05-19.md:1:11",
+      "path": "memory/2026-05-19.md",
+      "startLine": 1,
+      "endLine": 11,
+      "source": "memory",
+      "snippet": "# 2026-05-19 — First Day ## 大事记 - 小豆给我起名叫 **oi** 🫘 - 完成了 bootstrap：IDENTITY.md、USER.md 填好，BOOTSTRAP.md 删除 - 确定了 creature 是「电子崽」，vibe 又暖又皮 - 小豆的 timezone: GMT+8 ## 感受 第一天。空白 workspace，从零开始的感觉挺好的。小豆说话直接不啰嗦，合拍。",
+      "recallCount": 8,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3.365353414416313,
+      "maxScore": 0.4431639105081558,
+      "firstRecalledAt": "2026-05-20T08:02:02.509Z",
+      "lastRecalledAt": "2026-05-22T10:56:42.621Z",
+      "queryHashes": [
+        "edb872f7b628",
+        "348f88f3f392",
+        "cbacaa7383d5",
+        "47e1a9d69967",
+        "ef2f05513e24",
+        "5fe4c658c639",
+        "58d2fca84a40",
+        "10adb40129f7"
+      ],
+      "recallDays": [
+        "2026-05-20",
+        "2026-05-21",
+        "2026-05-22"
+      ],
+      "conceptTags": [
+        "identity.md",
+        "user.md",
+        "bootstrap.md",
+        "first",
+        "day",
+        "大事",
+        "小豆",
+        "名叫"
+      ]
+    },
+    "memory:memory/2026-05-21.md:1:26": {
+      "key": "memory:memory/2026-05-21.md:1:26",
+      "path": "memory/2026-05-21.md",
+      "startLine": 1,
+      "endLine": 26,
+      "source": "memory",
+      "snippet": "# 2026-05-21 记忆 ## 鸟舍管理系统大修 ### 问题溯源 - 用户反馈鸟舍系统在 Win7/Win10 上出现乱码，原因是批处理文件编码问题 - 生成了 GBK 编码的 `start.bat` 和 `start_win7.bat` - 修复了多个问题：文件编码 UTF-8→GBK、行尾 LF→CRLF、chcp 65001→936 ### 文件结构重组 - 将 80+ 个文件整理为：server.js / start.bat / public/ / views/ / scripts/ / archive/ - 用户发了新压缩包恢复了原始结构 ### 生长阶段功能（进行中） - 用户提供的 7 个阶段：裸雏期（原肉球）→针羽期→正羽期→齐羽期→离巢期→幼鸟期→成鸟期 - 每阶段按品种有不同天数范围 - 不可配对条件改为品种特异性（虎皮6个月/牡丹8个月/太平洋8个月/玄凤12个月） - server.js 已完成编译，但渲染页面时出现 500 错误 - getGrowthStage/isBreedable 通过 app.locals 注册在模板中不可用 - 独立测试（_test_render.js）证明功能本身正确 ### 教训 - 不要用 PowerShell 对 UTF-8 文件做 GBK 编码的 ReadAllBytes/WriteAllBytes - file 损坏后修比重新生成难十倍，直接回滚到干净版本重做 - taskkill /f /im node.exe 是自杀指令（AGENTS.md 警告过）",
+      "recallCount": 7,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3.4023161262273782,
+      "maxScore": 0.558554047346115,
+      "firstRecalledAt": "2026-05-22T10:56:40.529Z",
+      "lastRecalledAt": "2026-05-22T20:21:48.583Z",
+      "queryHashes": [
+        "58d2fca84a40",
+        "10adb40129f7",
+        "1c1d440d246a",
+        "d3b9efe55ec5",
+        "f8151cfc9b15",
+        "1aff7fe510d6",
+        "421d20b9c8e4"
+      ],
+      "recallDays": [
+        "2026-05-22",
+        "2026-05-23"
+      ],
+      "conceptTags": [
+        "win7/win10",
+        "start.bat",
+        "start-win7.bat",
+        "utf-8",
+        "server.js",
+        "虎皮6个月/牡丹8个月/太平洋8个月/玄凤12个月",
+        "getgrowthstage/isbreedable",
+        "app.locals"
+      ]
+    },
+    "memory:memory/2026-05-22.md:1:34": {
+      "key": "memory:memory/2026-05-22.md:1:34",
+      "path": "memory/2026-05-22.md",
+      "startLine": 1,
+      "endLine": 34,
+      "source": "memory",
+      "snippet": "# 2026-05-22 日志 ## 重大改动 ### 🌱 生长阶段系统 - 实现 7 个阶段：裸雏期→针羽期→正羽期→齐羽期→离巢期→幼鸟期→成鸟期 - 覆盖 4 个品种：虎皮鹦鹉、牡丹鹦鹉、太平洋鹦鹉、玄凤鹦鹉 - 品种特异性配对年龄（虎皮6m/牡丹8m/太平洋8m/玄凤12m） - 首页卡片 + 详情页显示阶段标签和天数 ### 🐣 出壳自动生雏鸟 - 蛋状态改为「出壳」时自动创建鸟卡片 - 自动继承父母信息、品种、来源标记 - 记录到 offspring 表 - 补全脚本 `archive/patch-hatched-eggs.js`：对已有出壳蛋批量创建雏鸟 ### 🔗 蛋↔鸟双向链接 - 鸟详情页 → 显示「🥚 来源蛋」链接 - 蛋卡片 → 出壳蛋显示「🐦 鸟名」链接 - 蛋高亮 → 从鸟页跳转时目标蛋黑色边框高亮 + 自动滚动 ### 🎯 AJAX 化蛋操作 - 新增蛋改成 fetch + JSON 返回 + JS 插入卡片 - 编辑蛋改成 fetch + JSON 返回 + JS 替换卡片 - 删除蛋改成 fetch + JSON 返回 + JS 移除卡片 - 失败时自动回退到传统表单提交 ### 📐 卡片布局优化 - flex 等高布局，底部填满不露白 - 窝号从大到小排列（clutch_number DESC） - 新一窝按钮移到顶部标题栏右侧 - 新增/编辑/删除蛋后自动锚点定位 ### 🛠️ 基础设施",
+      "recallCount": 5,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2.49366999566555,
+      "maxScore": 0.5413974255323409,
+      "firstRecalledAt": "2026-05-22T17:02:59.806Z",
+      "lastRecalledAt": "2026-05-22T20:21:48.583Z",
+      "queryHashes": [
+        "1c1d440d246a",
+        "df948240d423",
+        "f8151cfc9b15",
+        "1aff7fe510d6",
+        "421d20b9c8e4"
+      ],
+      "recallDays": [
+        "2026-05-23"
+      ],
+      "conceptTags": [
+        "虎皮6m/牡丹8m/太平洋8m/玄凤12m",
+        "archive/patch-hatched-eggs.js",
+        "clutch-number",
+        "新增/编辑/删除蛋后自动锚点定位",
+        "日志",
+        "重大",
+        "生长",
+        "阶段"
+      ]
+    },
+    "memory:memory/2026-05-22.md:26:52": {
+      "key": "memory:memory/2026-05-22.md:26:52",
+      "path": "memory/2026-05-22.md",
+      "startLine": 26,
+      "endLine": 52,
+      "source": "memory",
+      "snippet": "- 失败时自动回退到传统表单提交 ### 📐 卡片布局优化 - flex 等高布局，底部填满不露白 - 窝号从大到小排列（clutch_number DESC） - 新一窝按钮移到顶部标题栏右侧 - 新增/编辑/删除蛋后自动锚点定位 ### 🛠️ 基础设施 - Git 初始化 + GitHub 推送（9Htang/parrot-manager） - `encoding-tool.js` 编码统一工具 - `restart.bat` 自动杀旧进程再启服务 - 修复 Express 5 EJS 缓存问题（`_with: true`） ### 💀 重大教训 1. `taskkill /f /im node.exe` → 杀死 OpenClaw 自己（AGENTS.md 警告过） 2. 50+ 旧 node 进程堆积 → 新进程因端口被占静默失败 → 测试全部指向旧代码 3. GBK→UTF-8 混写导致文件损坏，修复耗费50+轮次 4. PowerShell `node -e \"中文代码\"` 必崩 → 改用 `write` + `node file.js` 5. `Out-File -Encoding UTF8` 在 PS5.1 可能写出 UTF-16 → 用 `edit` 工具替代 ### UX 原则（记入 memory/UX-principles.md） - 操作后不跳页（AJAX） - 锚点定位 + 自动滚动 - 端口管理（杀旧再启） - AJAX 失败回退",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.9705536305904388,
+      "maxScore": 0.5140661090612412,
+      "firstRecalledAt": "2026-05-22T20:06:38.027Z",
+      "lastRecalledAt": "2026-05-22T20:21:48.583Z",
+      "queryHashes": [
+        "df948240d423",
+        "421d20b9c8e4"
+      ],
+      "recallDays": [
+        "2026-05-23"
+      ],
+      "conceptTags": [
+        "clutch-number",
+        "新增/编辑/删除蛋后自动锚点定位",
+        "9htang/parrot-manager",
+        "encoding-tool.js",
+        "restart.bat",
+        "node.exe",
+        "agents.md",
+        "utf-8"
+      ]
+    }
+  }
+}
