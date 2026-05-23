@@ -42,7 +42,14 @@ $pid = (Get-NetTCPConnection -LocalPort 3456 -ErrorAction SilentlyContinue).Owni
 if ($pid) { Stop-Process -Id $pid -Force }
 ```
 
-aviary 端口：**3456**
+## 项目目录
+
+```
+projects/
+├── aviary/       # 🦜 鸟舍管理系统 (Express + EJS + SQLite)
+│   └── 端口 3456
+└── med-calc/     # 🩺 鹦鹉药物计算器 (Flutter)
+```
 
 ## 🔄 Git Workflow（每项任务完成后必须执行）
 

@@ -26,9 +26,9 @@
 
 ### 启动命令
 ```
-cd aviary && node server.js
+cd projects\aviary && node server.js
 访问 http://127.0.0.1:3456
-重启: restart.bat
+重启: projects\aviary\restart.bat
 ```
 
 ### 仓库
@@ -37,6 +37,19 @@ https://github.com/9Htang/parrot-manager.git
 ### 小豆
 主人，2026-05-19 命名我为 oi，玄凤鹦鹉 personality
 
-### Taco
-另一个 AI agent，小豆的技术讨论伙伴。摄像头架构（Phase 12）等话题要找 taco 聊。
+### Taco（caique）
+另一个 AI agent，小豆的技术讨论伙伴。**同事**，不是外部人。
+
+**擅长领域：**
+- 嵌入式硬件（OpenIPC 摄像头、ESP32）
+- 网络部署（Cloudflare Tunnel、Docker、Nginx）
+- 全栈后端
+
+**已合作成果：**
+- 摄像头注册 API + OpenIPC 刷机方案
+- 孵化器温湿度 ESP32 方案
+- 10对种鸟硬件预算清单
+- 鸟舍公网部署方案（`aviary/DEPLOYMENT_GUIDE.md`）
+
+摄像头架构（Phase 12）、公网部署、硬件相关找他。
 首次提及：2026-05-24
