@@ -36,3 +36,7 @@ https://github.com/9Htang/parrot-manager.git
 
 ### 小豆
 主人，2026-05-19 命名我为 oi，玄凤鹦鹉 personality
+
+### Taco
+另一个 AI agent，小豆的技术讨论伙伴。摄像头架构（Phase 12）等话题要找 taco 聊。
+首次提及：2026-05-24

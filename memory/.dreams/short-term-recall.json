@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-23T06:32:06.263Z",
+  "updatedAt": "2026-05-23T17:46:00.566Z",
   "entries": {
     "memory:memory/2026-05-20.md:1:36": {
       "key": "memory:memory/2026-05-20.md:1:36",
@@ -227,23 +227,25 @@
       "endLine": 34,
       "source": "memory",
       "snippet": "# 2026-05-22 日志 ## 重大改动 ### 🌱 生长阶段系统 - 实现 7 个阶段：裸雏期→针羽期→正羽期→齐羽期→离巢期→幼鸟期→成鸟期 - 覆盖 4 个品种：虎皮鹦鹉、牡丹鹦鹉、太平洋鹦鹉、玄凤鹦鹉 - 品种特异性配对年龄（虎皮6m/牡丹8m/太平洋8m/玄凤12m） - 首页卡片 + 详情页显示阶段标签和天数 ### 🐣 出壳自动生雏鸟 - 蛋状态改为「出壳」时自动创建鸟卡片 - 自动继承父母信息、品种、来源标记 - 记录到 offspring 表 - 补全脚本 `archive/patch-hatched-eggs.js`：对已有出壳蛋批量创建雏鸟 ### 🔗 蛋↔鸟双向链接 - 鸟详情页 → 显示「🥚 来源蛋」链接 - 蛋卡片 → 出壳蛋显示「🐦 鸟名」链接 - 蛋高亮 → 从鸟页跳转时目标蛋黑色边框高亮 + 自动滚动 ### 🎯 AJAX 化蛋操作 - 新增蛋改成 fetch + JSON 返回 + JS 插入卡片 - 编辑蛋改成 fetch + JSON 返回 + JS 替换卡片 - 删除蛋改成 fetch + JSON 返回 + JS 移除卡片 - 失败时自动回退到传统表单提交 ### 📐 卡片布局优化 - flex 等高布局，底部填满不露白 - 窝号从大到小排列（clutch_number DESC） - 新一窝按钮移到顶部标题栏右侧 - 新增/编辑/删除蛋后自动锚点定位 ### 🛠️ 基础设施",
-      "recallCount": 6,
+      "recallCount": 7,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3.005495399236679,
+      "totalScore": 3.475872591137886,
       "maxScore": 0.5413974255323409,
       "firstRecalledAt": "2026-05-22T17:02:59.806Z",
-      "lastRecalledAt": "2026-05-23T06:32:06.263Z",
+      "lastRecalledAt": "2026-05-23T17:46:00.566Z",
       "queryHashes": [
         "1c1d440d246a",
         "df948240d423",
         "f8151cfc9b15",
         "1aff7fe510d6",
         "421d20b9c8e4",
-        "6ff0c7a68aa9"
+        "6ff0c7a68aa9",
+        "84710da654eb"
       ],
       "recallDays": [
-        "2026-05-23"
+        "2026-05-23",
+        "2026-05-24"
       ],
       "conceptTags": [
         "虎皮6m/牡丹8m/太平洋8m/玄凤12m",
@@ -263,19 +265,21 @@
       "endLine": 52,
       "source": "memory",
       "snippet": "- 失败时自动回退到传统表单提交 ### 📐 卡片布局优化 - flex 等高布局，底部填满不露白 - 窝号从大到小排列（clutch_number DESC） - 新一窝按钮移到顶部标题栏右侧 - 新增/编辑/删除蛋后自动锚点定位 ### 🛠️ 基础设施 - Git 初始化 + GitHub 推送（9Htang/parrot-manager） - `encoding-tool.js` 编码统一工具 - `restart.bat` 自动杀旧进程再启服务 - 修复 Express 5 EJS 缓存问题（`_with: true`） ### 💀 重大教训 1. `taskkill /f /im node.exe` → 杀死 OpenClaw 自己（AGENTS.md 警告过） 2. 50+ 旧 node 进程堆积 → 新进程因端口被占静默失败 → 测试全部指向旧代码 3. GBK→UTF-8 混写导致文件损坏，修复耗费50+轮次 4. PowerShell `node -e \"中文代码\"` 必崩 → 改用 `write` + `node file.js` 5. `Out-File -Encoding UTF8` 在 PS5.1 可能写出 UTF-16 → 用 `edit` 工具替代 ### UX 原则（记入 memory/UX-principles.md） - 操作后不跳页（AJAX） - 锚点定位 + 自动滚动 - 端口管理（杀旧再启） - AJAX 失败回退",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.9705536305904388,
+      "totalScore": 1.442867323756218,
       "maxScore": 0.5140661090612412,
       "firstRecalledAt": "2026-05-22T20:06:38.027Z",
-      "lastRecalledAt": "2026-05-22T20:21:48.583Z",
+      "lastRecalledAt": "2026-05-23T17:46:00.566Z",
       "queryHashes": [
         "df948240d423",
-        "421d20b9c8e4"
+        "421d20b9c8e4",
+        "84710da654eb"
       ],
       "recallDays": [
-        "2026-05-23"
+        "2026-05-23",
+        "2026-05-24"
       ],
       "conceptTags": [
         "clutch-number",
@@ -317,6 +321,99 @@
         "事项",
         "核心",
         "任务"
+      ]
+    },
+    "memory:memory/2026-05-23.md:1:53": {
+      "key": "memory:memory/2026-05-23.md:1:53",
+      "path": "memory/2026-05-23.md",
+      "startLine": 1,
+      "endLine": 53,
+      "source": "memory",
+      "snippet": "# 2026-05-23 日志 ## 渐进式重构（完成 Phase 1–7） ### Phase 1: 拆分 server.js ✅ - config/db.js 独立 - 路由拆分到 routes/ ### Phase 2: Repository 层 ✅ - 4 个 repo 文件覆盖所有 SQL - 路由层零残留 db.prepare（从 159 处归零） ### Phase 3: Service 层 ✅ - routes → services → repos 三层链 - 业务逻辑全部从路由移入 service ### Phase 4: 错误处理中间件 ✅ - middleware/errorHandler.js - 自动区分 API(JSON) 和页面(HTML) 404/500 处理 - views/error.ejs 错误页 ### Phase 5: API 返回统一 ✅ - utils/apiResponse.js：sendSuccess/sendFail - 双兼容格式：{ success, ok, data, error } ### Phase 6: 表单验证 ✅ - 安装 Zod - schemas/birdSchema.js + roomSchema.js - 路由入口验证 ### Phase 7: 模块化目录 ✅ - modules/birds / rooms / breeding / genetics - 每个模块 index.js 聚合 routes/service/repo/schema - server.js 从 modules/",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.48352395892143246,
+      "maxScore": 0.48352395892143246,
+      "firstRecalledAt": "2026-05-23T17:46:00.566Z",
+      "lastRecalledAt": "2026-05-23T17:46:00.566Z",
+      "queryHashes": [
+        "84710da654eb"
+      ],
+      "recallDays": [
+        "2026-05-24"
+      ],
+      "conceptTags": [
+        "server.js",
+        "config/db.js",
+        "db.prepare",
+        "middleware/errorhandler.js",
+        "404/500",
+        "views/error.ejs",
+        "utils/apiresponse.js",
+        "sendsuccess/sendfail"
+      ]
+    },
+    "memory:memory/2026-05-23.md:42:88": {
+      "key": "memory:memory/2026-05-23.md:42:88",
+      "path": "memory/2026-05-23.md",
+      "startLine": 42,
+      "endLine": 88,
+      "source": "memory",
+      "snippet": "### Phase 1: 拆分 server.js ✅ - config/db.js 独立 - 路由拆分到 routes/ ### Phase 2: Repository 层 ✅ - 4 个 repo 文件覆盖所有 SQL - 路由层零残留 db.prepare（从 159 处归零） ### Phase 3: Service 层 ✅ - routes → services → repos 三层链 - 业务逻辑全部从路由移入 service ### Phase 4: 错误处理中间件 ✅ - middleware/errorHandler.js - 自动区分 API(JSON) 和页面(HTML) 404/500 处理 - views/error.ejs 错误页 ### Phase 5: API 返回统一 ✅ - utils/apiResponse.js：sendSuccess/sendFail - 双兼容格式：{ success, ok, data, error } ### Phase 6: 表单验证 ✅ - 安装 Zod - schemas/birdSchema.js + roomSchema.js - 路由入口验证 ### Phase 7: 模块化目录 ✅ - modules/birds / rooms / breeding / genetics - 每个模块 index.js 聚合 routes/service/repo/schema - server.js 从 modules/ 加载 ### Phase 8: 登录权限系统 ✅ + 三种角色：admin /",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.47943057417869567,
+      "maxScore": 0.47943057417869567,
+      "firstRecalledAt": "2026-05-23T17:46:00.566Z",
+      "lastRecalledAt": "2026-05-23T17:46:00.566Z",
+      "queryHashes": [
+        "84710da654eb"
+      ],
+      "recallDays": [
+        "2026-05-24"
+      ],
+      "conceptTags": [
+        "server.js",
+        "config/db.js",
+        "db.prepare",
+        "middleware/errorhandler.js",
+        "404/500",
+        "views/error.ejs",
+        "utils/apiresponse.js",
+        "sendsuccess/sendfail"
+      ]
+    },
+    "memory:memory/2026-05-23.md:80:101": {
+      "key": "memory:memory/2026-05-23.md:80:101",
+      "path": "memory/2026-05-23.md",
+      "startLine": 80,
+      "endLine": 101,
+      "source": "memory",
+      "snippet": "+ activity_logs 表，自动记录关键操作 + 日志查看页面（admin 后台，分页） ### Phase 10: 数据备份 ✅ + 手动/自动备份（启动时 + 每天凌晨3点） + 智能清理（保留7天 + 每月1号） ### 访客模式改进 - 未登录可直接浏览所有页面（游客模式） - 退出登录后跳转首页，而非登录页 - 访客看不到任何编辑/删除/新增按钮 - 登录按钮固定在导航栏最右侧 ### 已修复 bug - `birdRepo.updateBirdPhoto` 函数名错误→`updateImage` - 图片上传路径双重 `/static/uploads/` 前缀 - 裁切上传 302 跳转导致 fetch 崩溃 - `Date.now()` session secret 导致重启全部掉登录 ### 待做（Phase 11–14） 图片系统独立 / 摄像头升级 / genetics 独立 / 未来路线",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.47273271977901454,
+      "maxScore": 0.47273271977901454,
+      "firstRecalledAt": "2026-05-23T17:46:00.566Z",
+      "lastRecalledAt": "2026-05-23T17:46:00.566Z",
+      "queryHashes": [
+        "84710da654eb"
+      ],
+      "recallDays": [
+        "2026-05-24"
+      ],
+      "conceptTags": [
+        "备份",
+        "activity-logs",
+        "手动/自动备份",
+        "访客看不到任何编辑/删除/新增按钮",
+        "birdrepo.updatebirdphoto",
+        "static/uploads",
+        "date.now",
+        "自动"
       ]
     }
   }
