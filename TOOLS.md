@@ -54,21 +54,22 @@ projects/
 
 > 每个项目有自己的独立 git 仓库。workspace 级 git 只跟踪目录结构。
 
-## 🔄 Git Workflow（每项任务完成后必须执行）
+## 🔄 Git Workflow（⛔ 每次代码变更后必须执行）
 
-每项任务完成后，按以下步骤提交到 GitHub：
+**改了代码就必须 commit + push，不留未推送的改动！**
 
 1. `git status` — 查看变更
-2. `git add .` — 暂存所有变更
+2. `git add -A` — 暂存所有变更
 3. `git commit -m "<有意义的信息>"` — 描述本轮改了什么
 4. `git push` — 推送到远程
 
-**一项任务未完成的标准：**
+**不合格的状态（任一不可）：**
 - ❌ 变更未提交
 - ❌ 提交未推送
-- ❌ 工作区不干净
+- ❌ 工作区有未暂存的改动
 
-任务完成前必须提交并推送，不留未提交的改动。
+> med_calc 推 → github.com/9Htang/med-calc
+> aviary 推 → github.com/9Htang/parrot-manager
 
 ## Why Separate?
 
