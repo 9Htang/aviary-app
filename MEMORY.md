@@ -40,6 +40,26 @@ med_calc 远程：github.com/9Htang/med-calc
 - **鸟房页面优化**：列表页 hover/间距/响应式；详情页表格→卡片
 - **鸟详情页补顶栏**
 
+### 2026-05-25 手机端 v1.0.5
+- 解决 Android 明文 HTTP 限制（`usesCleartextTraffic` + `INTERNET`）
+- 手动 Session Cookie 管理（`dart:io HttpClient`）
+- 保持登录（SharedPreferences 持久化登录态+cookie）
+- 日历中文（`flutter_localizations`）
+- 称重工作流：记录完自动下一只
+- 同小时称重自动覆盖
+- 喂药确认弹窗
+- 按钮布局：❌右上退出 / 左下跳过 / 右下记录并继续
+- 版本号 v1.0.5 + 版本追踪
+
+### 服务端新增
+- `/download/:file` 下载路由（公开，Cache-Control: no-cache）
+- 动态文件名：`aviary-v{version}.apk` 防缓存
+
+### wiki 文档
+- `wiki/aviary-project.md` — 项目总文档
+- `wiki/aviary-app-dev.md` — 手机端开发指南
+- `wiki/_index.md` — 索引
+
 ### 启动命令
 ```
 cd projects\aviary && node server.js
