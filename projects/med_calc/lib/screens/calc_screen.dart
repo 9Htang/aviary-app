@@ -17,12 +17,11 @@ class _CalcScreenState extends State<CalcScreen> {
   Drug? _selectedDrug;
   Bird? _selectedBird;
   double _doseSlider = 0;
-  double _waterVolume = 0.2;
+  double _dosePerTimeMl = 0.2; // 每次喂服量
 
   final _searchCtrl = TextEditingController();
   final _weightCtrl = TextEditingController(text: '100');
   final _strengthCtrl = TextEditingController(text: '5');
-  final _waterCtrl = TextEditingController(text: '0.2');
 
   DoseResult? _result;
   bool _loaded = false;
@@ -59,9 +58,9 @@ class _CalcScreenState extends State<CalcScreen> {
   void _selectBird(Bird bird) {
     setState(() {
       _selectedBird = bird;
-      _waterVolume = bird.maxOralMl * 0.6; // default to 60% of max
-      _waterCtrl.text = _waterVolume.toStringAsFixed(2);
       _result = null;
+      // 根据鸟种自动选默认每次喂服量
+      _dosePerTimeMl = bird.maxOralMl <= 0.2 ? 0.2 : 1.0;
     });
     Navigator.pop(context);
   }
@@ -71,18 +70,15 @@ class _CalcScreenState extends State<CalcScreen> {
 
     final weight = double.tryParse(_weightCtrl.text) ?? 100;
     final strength = double.tryParse(_strengthCtrl.text) ?? 5;
-    final water = double.tryParse(_waterCtrl.text) ?? 0.2;
-
-    if (weight <= 0 || strength <= 0 || water <= 0) return;
+    if (weight <= 0 || strength <= 0) return;
 
     setState(() {
-      _waterVolume = water;
       _result = DoseCalculator.calculate(
         drug: _selectedDrug!,
         selectedDose: _doseSlider,
         birdWeightG: weight,
         drugStrength: strength,
-        waterVolumeMl: water,
+        dosePerTimeMl: _dosePerTimeMl,
         maxOralMl: _selectedBird!.maxOralMl,
       );
     });
@@ -171,6 +167,8 @@ class _CalcScreenState extends State<CalcScreen> {
       );
     }
 
+    final isSmallBird = _selectedBird != null && _selectedBird!.maxOralMl <= 0.2;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('🦜 药物计算器'),
@@ -181,32 +179,40 @@ class _CalcScreenState extends State<CalcScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // 选药
+            // 1. 选药
             _buildSectionTitle('① 选择药品'),
             const SizedBox(height: 4),
             _buildDrugSelector(),
             const SizedBox(height: 20),
 
-            // 选鸟
+            // 2. 选鸟
             _buildSectionTitle('② 选择鹦鹉'),
             const SizedBox(height: 4),
             _buildBirdSelector(),
             const SizedBox(height: 20),
 
-            // 剂量滑块
+            // 3. 剂量滑块
             if (_selectedDrug != null) ...[
               _buildSectionTitle('③ 调整剂量强度'),
               _buildDoseSlider(),
               const SizedBox(height: 20),
             ],
 
-            // 参数输入
+            // 4. 输入参数
             _buildSectionTitle('④ 输入参数'),
             const SizedBox(height: 4),
             _buildParamInputs(),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
-            // 计算按钮
+            // 5. 每次喂服量选择
+            if (_selectedBird != null) ...[
+              _buildSectionTitle('⑤ 选择每次喂服量'),
+              const SizedBox(height: 4),
+              _buildDoseVolumeSelector(isSmallBird),
+              const SizedBox(height: 24),
+            ],
+
+            // 6. 计算按钮
             FilledButton.icon(
               onPressed: (_selectedDrug != null && _selectedBird != null) ? _calculate : null,
               icon: const Icon(Icons.calculate),
@@ -216,7 +222,7 @@ class _CalcScreenState extends State<CalcScreen> {
               ),
             ),
 
-            // 结果
+            // 7. 结果
             if (_result != null) ...[
               const SizedBox(height: 24),
               _buildResult(),
@@ -332,12 +338,6 @@ class _CalcScreenState extends State<CalcScreen> {
             _buildInputRow('鹦鹉体重 (g)', _weightCtrl, '例: 100'),
             const SizedBox(height: 12),
             _buildInputRow('每片药含量 (mg)', _strengthCtrl, '例: 5'),
-            const SizedBox(height: 12),
-            _buildInputRow(
-              '加水体积 (mL)',
-              _waterCtrl,
-              _selectedBird != null ? '参考上限 ${_selectedBird!.maxOralMl}mL' : '例: 0.2',
-            ),
           ],
         ),
       ),
@@ -361,6 +361,40 @@ class _CalcScreenState extends State<CalcScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildDoseVolumeSelector(bool isSmall) {
+    final options = isSmall ? [0.1, 0.2] : [0.5, 1.0, 2.0];
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              isSmall ? '中小型鹦鹉推荐 0.1 或 0.2mL' : '大型鹦鹉推荐 0.5 或 1.0mL',
+              style: const TextStyle(fontSize: 13, color: Colors.grey),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: options.map((v) => Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: ChoiceChip(
+                    label: Text('${v}mL', style: const TextStyle(fontSize: 14)),
+                    selected: _dosePerTimeMl == v,
+                    onSelected: (_) => setState(() {
+                      _dosePerTimeMl = v;
+                      _result = null;
+                    }),
+                  ),
+                ),
+              )).toList(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -389,38 +423,47 @@ class _CalcScreenState extends State<CalcScreen> {
             _resultRow('药片规格', '${r.drugStrength.toStringAsFixed(1)} mg/片'),
 
             const Divider(height: 16),
-            Text(
-              '取 ${r.tabletsNeeded} 片 (${r.actualMg.toStringAsFixed(1)}mg)，研碎',
-              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
-            ),
-            Text('加 ${r.waterVolumeMl.toStringAsFixed(2)} mL 水溶解'),
-            const SizedBox(height: 8),
-            Text(
-              '药液浓度: ${r.concentration.toStringAsFixed(1)} mg/mL',
-              style: const TextStyle(color: Colors.grey),
-            ),
-            const SizedBox(height: 8),
 
+            // 配药步骤
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: r.isOverLimit ? Colors.red.shade50 : Colors.green.shade50,
+                color: Colors.white.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(r.isOverLimit ? Icons.warning_amber : Icons.check_circle,
-                       color: r.isOverLimit ? Colors.red : Colors.green),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      r.isOverLimit
-                        ? '⚠️ 每次喂 ${r.dosePerTimeMl.toStringAsFixed(2)}mL，超过安全上限 ${r.maxOralMl}mL！请增加水量重新计算'
-                        : '✅ 每次喂服 ${r.dosePerTimeMl.toStringAsFixed(2)} mL（用 1mL 针管），未超过安全上限 ${r.maxOralMl}mL',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: r.isOverLimit ? Colors.red.shade800 : Colors.green.shade800,
-                      ),
+                  Text('① 取 ${r.tabletsNeeded} 片（${r.actualMg.toStringAsFixed(1)}mg），研碎', style: const TextStyle(fontSize: 15)),
+                  const SizedBox(height: 6),
+                  Text('② 加水 ${r.waterVolumeMl.toStringAsFixed(2)} mL，搅拌溶解', style: const TextStyle(fontSize: 15)),
+                  Text('   （用秤称 ${r.waterVolumeMl.toStringAsFixed(2)}g 水即可）', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                  const SizedBox(height: 6),
+                  Text('③ 药液浓度: ${r.concentration.toStringAsFixed(1)} mg/mL', style: const TextStyle(fontSize: 14)),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: r.isOverLimit ? Colors.red.shade50 : Colors.green.shade50,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(r.isOverLimit ? Icons.warning_amber : Icons.check_circle,
+                             color: r.isOverLimit ? Colors.red : Colors.green, size: 20),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            '④ 每次用 1mL 针管抽 ${r.dosePerTimeMl.toStringAsFixed(1)} mL 喂服\n'
+                            '   （含 ${r.actualDoseMg.toStringAsFixed(1)}mg 药物）',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
+                              color: r.isOverLimit ? Colors.red.shade800 : Colors.green.shade800,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -431,6 +474,11 @@ class _CalcScreenState extends State<CalcScreen> {
             _resultRow('给药频次', r.drug.freq),
             _resultRow('给药途径', r.drug.route),
             if (r.drug.note.isNotEmpty) _resultRow('备注', r.drug.note),
+            if (!r.isAccurate && !r.isOverLimit)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(r.note, style: TextStyle(color: Colors.orange.shade800, fontSize: 13)),
+              ),
           ],
         ),
       ),
@@ -455,7 +503,6 @@ class _CalcScreenState extends State<CalcScreen> {
     _searchCtrl.dispose();
     _weightCtrl.dispose();
     _strengthCtrl.dispose();
-    _waterCtrl.dispose();
     super.dispose();
   }
 }

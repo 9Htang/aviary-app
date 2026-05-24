@@ -1,7 +1,7 @@
 {
-  "version": "1.0",
-  "date": "2026-05-24",
-  "source": "异宠药典鹦鹉篇",
+  "version": "2.0",
+  "date": "2026-05-25",
+  "source": "Carpenter's Exotic Animal Formulary, 6th Ed. + 异宠药典鹦鹉篇",
   "drugs": [
     {
       "name": "阿莫西林",
@@ -465,5 +465,6 @@
       "birds": "鹦鹉",
       "note": "逐渐减量"
     }
-  ]
+  ],
+  "note": "仅含口服(PO)剂量，鹦鹉相关数据"
 }
