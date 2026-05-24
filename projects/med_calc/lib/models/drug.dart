@@ -8,6 +8,8 @@ class Drug {
   final String freq;
   final String birds;
   final String note;
+  final String mechanism;
+  final String sideEffects;
 
   const Drug({
     required this.name,
@@ -19,6 +21,8 @@ class Drug {
     required this.freq,
     required this.birds,
     this.note = '',
+    this.mechanism = '',
+    this.sideEffects = '',
   });
 
   double get doseMid => (doseMin + doseMax) / 2;
@@ -34,6 +38,8 @@ class Drug {
       freq: json['freq'] as String,
       birds: json['birds'] as String,
       note: json['note'] as String? ?? '',
+      mechanism: json['mechanism'] as String? ?? '',
+      sideEffects: json['sideEffects'] as String? ?? '',
     );
   }
 }

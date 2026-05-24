@@ -2,58 +2,69 @@ import '../models/drug.dart';
 
 class DoseResult {
   final Drug drug;
-  final double selectedDose;    // mg/kg
+  final double selectedDose;      // mg/kg or IU/kg
   final double birdWeightKg;
-  final double drugStrength;    // mg per tablet
-  final double dosePerTimeMl;   // 用户选的每次喂服量 (0.1/0.2/0.5/1.0)
-  final double maxOralMl;       // 安全上限
+  final double drugStrength;      // mg or 万IU per tablet
+  final String strengthUnit;      // "mg" or "万IU"
+  final double dosePerTimeMl;
+  final double maxOralMl;
 
-  /// 需药量 (mg)
-  double get requiredMg => birdWeightKg * selectedDose;
+  String get doseUnit => drug.unit; // "mg/kg" or "IU/kg"
+  bool get isIu => doseUnit.contains('IU');
 
-  /// 整片数量（向上取整）
-  int get tabletsNeeded => (requiredMg / drugStrength).ceil();
+  /// 需药量（统一单位：mg 或 万IU）
+  double get requiredAmount {
+    double raw = birdWeightKg * selectedDose;
+    if (isIu) return raw / 10000; // IU → 万IU，与用户输入的 drugStrength 单位一致
+    return raw;
+  }
 
-  /// 实际总药量 (mg)
-  double get actualMg => tabletsNeeded * drugStrength;
+  /// 整片数量
+  int get tabletsNeeded => (requiredAmount / drugStrength).ceil();
 
-  /// 推荐加水量 (mL) — 使每次喂服量正好等于用户选的剂量
+  /// 实际总药量
+  double get actualAmount => tabletsNeeded * drugStrength;
+
+  /// 推荐加水量
   double get waterVolumeMl {
-    if (requiredMg <= 0) return 0;
-    double vol = dosePerTimeMl * actualMg / requiredMg;
-    // 取整到 0.05mL（用户称重可以精确到0.05g）
+    if (requiredAmount <= 0) return 0;
+    double vol = dosePerTimeMl * actualAmount / requiredAmount;
     return (vol * 20).roundToDouble() / 20.0;
   }
 
-  /// 药液浓度 (mg/mL)
-  double get concentration => actualMg / waterVolumeMl;
+  /// 药液浓度
+  double get concentration => actualAmount / waterVolumeMl;
 
-  /// 实际喂入药量 (mg)
-  double get actualDoseMg => dosePerTimeMl * concentration;
+  /// 每次实际喂入药量
+  double get actualDoseAmount => dosePerTimeMl * concentration;
 
-  /// 是否超过安全上限
+  /// 安全上限检查
   bool get isOverLimit => dosePerTimeMl > maxOralMl;
 
-  /// 是否在合理范围（80-120%）
   bool get isAccurate {
-    if (requiredMg <= 0) return false;
-    double ratio = actualDoseMg / requiredMg;
+    if (requiredAmount <= 0) return false;
+    double ratio = actualDoseAmount / requiredAmount;
     return ratio >= 0.8 && ratio <= 1.2;
   }
 
   String get note {
     if (isOverLimit) return '⚠️ 超过安全上限 ${maxOralMl}mL！';
-    double ratio = actualDoseMg / requiredMg;
-    if (ratio > 1.2) return '💡 每次 ${dosePerTimeMl}mL 含药 ${actualDoseMg.toStringAsFixed(1)}mg（略超需药量），可以';
-    if (ratio < 0.8) return '💡 每次 ${dosePerTimeMl}mL 含药 ${actualDoseMg.toStringAsFixed(1)}mg（略不足），可以';
+    double ratio = actualDoseAmount / requiredAmount;
+    if (ratio > 1.2) return '💡 每次 ${dosePerTimeMl}mL 含药 ${actualDoseAmount.toStringAsFixed(1)}${_unit}（略超）';
+    if (ratio < 0.8) return '💡 每次 ${dosePerTimeMl}mL 含药 ${actualDoseAmount.toStringAsFixed(1)}${_unit}（略不足）';
     return '';
   }
+
+  String get _unit => isIu ? '万IU' : 'mg';
+  /// 显示用的剂量单位标签
+  String get doseLabel => isIu ? '万IU' : 'mg';
 
   DoseResult({
     required this.drug,
     required this.selectedDose,
     required this.birdWeightKg,
     required this.drugStrength,
+    required this.strengthUnit,
     required this.dosePerTimeMl,
     required this.maxOralMl,
   });
@@ -65,6 +76,7 @@ class DoseCalculator {
     required double selectedDose,
     required double birdWeightG,
     required double drugStrength,
+    required String strengthUnit,
     required double dosePerTimeMl,
     required double maxOralMl,
   }) {
@@ -73,6 +85,7 @@ class DoseCalculator {
       selectedDose: selectedDose,
       birdWeightKg: birdWeightG / 1000,
       drugStrength: drugStrength,
+      strengthUnit: strengthUnit,
       dosePerTimeMl: dosePerTimeMl,
       maxOralMl: maxOralMl,
     );

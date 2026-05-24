@@ -31,6 +31,17 @@ Things like:
 - Default speaker: Kitchen HomePod
 ```
 
+## QQ Bot 用户信息
+
+```json
+{
+  "chat_id": "qqbot:c2c:AB586DEAD7326851A4E58525A6CCF01F",
+  "sender_id": "AB586DEAD7326851A4E58525A6CCF01F",
+  "sender": "AB586DEAD7326851A4E58525A6CCF01F",
+  "label": "小豆"
+}
+```
+
 ## ⚠️ 生死线：永远别杀所有 node 进程
 
 ```

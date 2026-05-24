@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2E7D32"/>
+      <stop offset="100%" style="stop-color:#1B5E20"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#66BB6A"/>
+      <stop offset="100%" style="stop-color:#43A047"/>
+    </linearGradient>
+    <linearGradient id="belly" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#C8E6C9"/>
+      <stop offset="100%" style="stop-color:#A5D6A7"/>
+    </linearGradient>
+  </defs>
+  <!-- 圆角方形背景 -->
+  <rect x="0" y="0" width="512" height="512" rx="100" ry="100" fill="url(#bg)"/>
+  
+  <!-- 身体 - 玄凤鹦鹉轮廓 -->
+  <g transform="translate(256,280)">
+    <!-- 尾巴 -->
+    <path d="M-10,40 Q-5,90 0,120 Q5,90 0,40" fill="#388E3C" stroke="none"/>
+    <path d="M10,40 Q20,80 25,110 Q15,80 10,40" fill="#2E7D32" stroke="none"/>
+    
+    <!-- 身体 -->
+    <ellipse cx="0" cy="0" rx="55" ry="65" fill="url(#body)"/>
+    
+    <!-- 肚子（淡绿色） -->
+    <ellipse cx="15" cy="15" rx="35" ry="45" fill="url(#belly)"/>
+    
+    <!-- 翅膀 -->
+    <path d="M-35,-20 Q-70,-30 -65,10 Q-60,40 -40,30 Q-50,10 -45,-10 Z" fill="#43A047" stroke="#2E7D32" stroke-width="1"/>
+    
+    <!-- 翅膀条纹 -->
+    <path d="M-45,-5 Q-55,0 -50,15" fill="none" stroke="#2E7D32" stroke-width="1.5" opacity="0.5"/>
+    <path d="M-40,10 Q-48,15 -45,25" fill="none" stroke="#2E7D32" stroke-width="1.5" opacity="0.5"/>
+  </g>
+  
+  <!-- 头部 -->
+  <g transform="translate(256,200)">
+    <!-- 头 -->
+    <ellipse cx="5" cy="0" rx="38" ry="34" fill="url(#body)"/>
+    
+    <!-- 凤冠（玄凤标志） -->
+    <path d="M-5,-28 Q0,-60 10,-75 Q8,-55 5,-50 Q15,-70 25,-80 Q18,-55 12,-45 Q25,-55 30,-60 Q22,-40 15,-30" 
+          fill="#66BB6A" stroke="#43A047" stroke-width="1"/>
+    
+    <!-- 脸颊（橙色腮红 - 玄凤特征） -->
+    <ellipse cx="22" cy="5" rx="12" ry="10" fill="#FF8A65" opacity="0.8"/>
+    
+    <!-- 眼睛 -->
+    <circle cx="12" cy="-5" r="6" fill="#1a1a1a"/>
+    <circle cx="14" cy="-7" r="2.5" fill="white"/>
+    
+    <!-- 嘴巴 -->
+    <path d="M30,-2 Q45,0 40,10 Q35,8 30,5 Z" fill="#F57C00" stroke="#E65100" stroke-width="0.5"/>
+    <line x1="30" y1="2" x2="38" y2="4" stroke="#E65100" stroke-width="0.8"/>
+  </g>
+  
+  <!-- 树枝/站棍 -->
+  <rect x="140" y="430" width="232" height="12" rx="6" fill="#5D4037"/>
+  <rect x="160" y="432" width="8" height="8" rx="4" fill="#4E342E" opacity="0.5"/>
+  <rect x="300" y="430" width="6" height="10" rx="3" fill="#4E342E" opacity="0.5"/>
+  
+  <!-- 爪子 -->
+  <g transform="translate(256,345)">
+    <path d="M-15,-5 L-20,5 L-25,2" fill="none" stroke="#795548" stroke-width="3" stroke-linecap="round"/>
+    <path d="M-15,-5 L-12,5 L-8,2" fill="none" stroke="#795548" stroke-width="3" stroke-linecap="round"/>
+    <path d="M15,-5 L10,5 L6,2" fill="none" stroke="#795548" stroke-width="3" stroke-linecap="round"/>
+    <path d="M15,-5 L18,5 L22,2" fill="none" stroke="#795548" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>
