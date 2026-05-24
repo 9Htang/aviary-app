@@ -1,5 +1,19 @@
 # MEMORY.md
 
+## 项目结构
+
+```
+workspace/
+├── projects/
+│   ├── aviary/       # 🦜 鸟舍管理系统 — Express + SQLite
+│   └── med-calc/     # 🩺 鹦鹉药物计算器 — Flutter（新建）
+├── memory/
+├── node_modules/
+└── AGENTS.md, SOUL.md...
+```
+
+每个项目有独立 git 仓库。aviary 远程：github.com/9Htang/parrot-manager
+
 ## 鸟舍管理系统（2026-05-23 起）
 
 ### 核心任务

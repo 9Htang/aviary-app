@@ -47,9 +47,12 @@ if ($pid) { Stop-Process -Id $pid -Force }
 ```
 projects/
 ├── aviary/       # 🦜 鸟舍管理系统 (Express + EJS + SQLite)
-│   └── 端口 3456
+│   ├── 端口 3456
+│   └── 独立 git → https://github.com/9Htang/parrot-manager.git
 └── med-calc/     # 🩺 鹦鹉药物计算器 (Flutter)
 ```
+
+> 每个项目有自己的独立 git 仓库。workspace 级 git 只跟踪目录结构。
 
 ## 🔄 Git Workflow（每项任务完成后必须执行）
 
