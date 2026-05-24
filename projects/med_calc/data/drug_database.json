@@ -2,6 +2,7 @@
   "version": "2.0",
   "date": "2026-05-25",
   "source": "Carpenter's Exotic Animal Formulary, 6th Ed. + 异宠药典鹦鹉篇",
+  "note": "仅含口服(PO)鹦鹉用药，鸽子已排除",
   "drugs": [
     {
       "name": "阿莫西林",
@@ -9,43 +10,10 @@
       "dose_min": 15,
       "dose_max": 20,
       "unit": "mg/kg",
-      "route": "PO/IM/IV",
+      "route": "口服",
       "freq": "q8-12h",
-      "birds": "鹦鹉、鸽子、雀形目",
+      "birds": "鹦鹉、雀形目",
       "note": "广谱青霉素"
-    },
-    {
-      "name": "氨苄西林",
-      "category": "beta-内酰胺类",
-      "dose_min": 15,
-      "dose_max": 20,
-      "unit": "mg/kg",
-      "route": "IM/IV",
-      "freq": "q8-12h",
-      "birds": "鹦鹉、鸽子",
-      "note": ""
-    },
-    {
-      "name": "青霉素G",
-      "category": "beta-内酰胺类",
-      "dose_min": 20,
-      "dose_max": 30,
-      "unit": "mg/kg",
-      "route": "IM",
-      "freq": "q12-24h",
-      "birds": "平胸鸟类",
-      "note": ""
-    },
-    {
-      "name": "美罗培南",
-      "category": "beta-内酰胺类",
-      "dose_min": 10,
-      "dose_max": 20,
-      "unit": "mg/kg",
-      "route": "IV",
-      "freq": "q8-12h",
-      "birds": "鹦鹉",
-      "note": "重症感染"
     },
     {
       "name": "头孢氨苄",
@@ -53,31 +21,9 @@
       "dose_min": 25,
       "dose_max": 50,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉、猛禽",
-      "note": ""
-    },
-    {
-      "name": "庆大霉素",
-      "category": "氨基糖苷类",
-      "dose_min": 5,
-      "dose_max": 10,
-      "unit": "mg/kg",
-      "route": "IM/IV",
-      "freq": "q8-12h",
-      "birds": "鹦鹉",
-      "note": "肾毒性注意"
-    },
-    {
-      "name": "卡那霉素",
-      "category": "氨基糖苷类",
-      "dose_min": 10,
-      "dose_max": 15,
-      "unit": "mg/kg",
-      "route": "IM",
-      "freq": "q12h",
-      "birds": "鹦鹉",
       "note": ""
     },
     {
@@ -86,43 +32,10 @@
       "dose_min": 10,
       "dose_max": 15,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉",
       "note": "肠道感染"
-    },
-    {
-      "name": "妥布霉素",
-      "category": "氨基糖苷类",
-      "dose_min": 5,
-      "dose_max": 10,
-      "unit": "mg/kg",
-      "route": "IM/IV",
-      "freq": "q8-12h",
-      "birds": "鹦鹉",
-      "note": ""
-    },
-    {
-      "name": "大观霉素",
-      "category": "氨基糖苷类",
-      "dose_min": 10,
-      "dose_max": 20,
-      "unit": "mg/kg",
-      "route": "IM",
-      "freq": "q12-24h",
-      "birds": "鸽子、鹦鹉",
-      "note": ""
-    },
-    {
-      "name": "链霉素",
-      "category": "氨基糖苷类",
-      "dose_min": 10,
-      "dose_max": 20,
-      "unit": "mg/kg",
-      "route": "IM",
-      "freq": "q12h",
-      "birds": "鹦鹉",
-      "note": ""
     },
     {
       "name": "多西环素",
@@ -130,7 +43,7 @@
       "dose_min": 25,
       "dose_max": 50,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12-24h",
       "birds": "鹦鹉、玄凤、金刚",
       "note": "衣原体首选"
@@ -141,7 +54,7 @@
       "dose_min": 25,
       "dose_max": 50,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉、金丝雀",
       "note": ""
@@ -152,7 +65,7 @@
       "dose_min": 40,
       "dose_max": 45,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q48h",
       "birds": "金刚鹦鹉、鹦鹉",
       "note": "细胞内感染"
@@ -163,7 +76,7 @@
       "dose_min": 10,
       "dose_max": 20,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉",
       "note": ""
@@ -174,7 +87,7 @@
       "dose_min": 25,
       "dose_max": 50,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12-24h",
       "birds": "鹦鹉",
       "note": ""
@@ -185,7 +98,7 @@
       "dose_min": 10,
       "dose_max": 25,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q24h",
       "birds": "鹦鹉",
       "note": ""
@@ -196,7 +109,7 @@
       "dose_min": 15,
       "dose_max": 30,
       "unit": "mg/kg",
-      "route": "PO/IM",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉",
       "note": ""
@@ -207,7 +120,7 @@
       "dose_min": 10,
       "dose_max": 15,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉",
       "note": ""
@@ -218,7 +131,7 @@
       "dose_min": 5,
       "dose_max": 15,
       "unit": "mg/kg",
-      "route": "PO/IM",
+      "route": "口服",
       "freq": "q12-24h",
       "birds": "亚马逊鹦鹉、玄凤",
       "note": "幼鸟慎用"
@@ -229,7 +142,7 @@
       "dose_min": 10,
       "dose_max": 20,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉",
       "note": ""
@@ -240,7 +153,7 @@
       "dose_min": 2,
       "dose_max": 5,
       "unit": "mg/kg",
-      "route": "PO/IM",
+      "route": "口服",
       "freq": "q24h",
       "birds": "鹦鹉",
       "note": ""
@@ -251,7 +164,7 @@
       "dose_min": 10,
       "dose_max": 10,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉",
       "note": ""
@@ -262,7 +175,7 @@
       "dose_min": 10,
       "dose_max": 15,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉",
       "note": ""
@@ -273,21 +186,10 @@
       "dose_min": 30,
       "dose_max": 50,
       "unit": "mg/kg",
-      "route": "PO/IM",
+      "route": "口服",
       "freq": "q8-12h",
       "birds": "鹦鹉",
       "note": "慎用，再障风险"
-    },
-    {
-      "name": "两性霉素B",
-      "category": "抗真菌类",
-      "dose_min": 1.5,
-      "dose_max": 1.5,
-      "unit": "mg/kg",
-      "route": "IV",
-      "freq": "每周3次",
-      "birds": "鹦鹉",
-      "note": "肾毒性"
     },
     {
       "name": "氟康唑",
@@ -295,7 +197,7 @@
       "dose_min": 5,
       "dose_max": 10,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12-24h",
       "birds": "鹦鹉",
       "note": ""
@@ -306,7 +208,7 @@
       "dose_min": 5,
       "dose_max": 10,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12-24h",
       "birds": "鹦鹉",
       "note": "与食物同服"
@@ -317,7 +219,7 @@
       "dose_min": 10,
       "dose_max": 30,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉",
       "note": "肝毒性注意"
@@ -328,7 +230,7 @@
       "dose_min": 30,
       "dose_max": 50,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉、鸡",
       "note": "多饮水"
@@ -339,21 +241,10 @@
       "dose_min": 15,
       "dose_max": 30,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉",
       "note": "常与磺胺联用"
-    },
-    {
-      "name": "多黏菌素",
-      "category": "多肽类",
-      "dose_min": 5,
-      "dose_max": 10,
-      "unit": "mg/kg",
-      "route": "IM",
-      "freq": "q12h",
-      "birds": "鹦鹉",
-      "note": "肾毒性"
     },
     {
       "name": "黏菌素",
@@ -361,21 +252,10 @@
       "dose_min": 5,
       "dose_max": 10,
       "unit": "mg/kg",
-      "route": "PO/IM",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉",
       "note": ""
-    },
-    {
-      "name": "万古霉素",
-      "category": "多肽类",
-      "dose_min": 15,
-      "dose_max": 20,
-      "unit": "mg/kg",
-      "route": "IV",
-      "freq": "q8-12h",
-      "birds": "鹦鹉",
-      "note": "重症耐药菌"
     },
     {
       "name": "利福平",
@@ -383,7 +263,7 @@
       "dose_min": 10,
       "dose_max": 20,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q24h",
       "birds": "鹦鹉",
       "note": "肝毒性，联合用药"
@@ -394,7 +274,7 @@
       "dose_min": 25,
       "dose_max": 50,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12h",
       "birds": "鹦鹉",
       "note": "厌氧菌/原虫"
@@ -405,7 +285,7 @@
       "dose_min": 20,
       "dose_max": 50,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q24h x 3-5d",
       "birds": "鹦鹉",
       "note": "线虫"
@@ -416,7 +296,7 @@
       "dose_min": 0.1,
       "dose_max": 0.5,
       "unit": "mg/kg",
-      "route": "PO/IM",
+      "route": "口服",
       "freq": "q12-24h",
       "birds": "鹦鹉",
       "note": ""
@@ -427,32 +307,10 @@
       "dose_min": 2,
       "dose_max": 4,
       "unit": "mg/kg",
-      "route": "PO/IM",
+      "route": "口服",
       "freq": "q12-24h",
       "birds": "鹦鹉",
       "note": ""
-    },
-    {
-      "name": "氟尼辛",
-      "category": "抗炎(NSAIDs)",
-      "dose_min": 1,
-      "dose_max": 2,
-      "unit": "mg/kg",
-      "route": "IM",
-      "freq": "q12-24h",
-      "birds": "鹦鹉",
-      "note": ""
-    },
-    {
-      "name": "地塞米松",
-      "category": "皮质类固醇",
-      "dose_min": 0.1,
-      "dose_max": 0.5,
-      "unit": "mg/kg",
-      "route": "IM",
-      "freq": "单次或q24h",
-      "birds": "鹦鹉",
-      "note": "休克/炎症"
     },
     {
       "name": "泼尼松龙",
@@ -460,11 +318,21 @@
       "dose_min": 0.5,
       "dose_max": 2,
       "unit": "mg/kg",
-      "route": "PO",
+      "route": "口服",
       "freq": "q12-24h",
       "birds": "鹦鹉",
       "note": "逐渐减量"
+    },
+    {
+      "name": "制霉菌素",
+      "category": "抗真菌类",
+      "dose_min": 100000,
+      "dose_max": 200000,
+      "unit": "IU/kg",
+      "route": "口服",
+      "freq": "每8-12小时",
+      "birds": "鹦鹉",
+      "note": "IU为单位，非mg；用于念珠菌感染"
     }
-  ],
-  "note": "仅含口服(PO)剂量，鹦鹉相关数据"
+  ]
 }

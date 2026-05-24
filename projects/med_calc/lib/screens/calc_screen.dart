@@ -113,9 +113,22 @@ class _CalcScreenState extends State<CalcScreen> {
                     final d = _filteredDrugs[i];
                     return ListTile(
                       title: Text(d.name),
-                      subtitle: Text(
-                        '${d.doseMin}-${d.doseMax} mg/kg  |  ${d.route}  |  ${d.birds}',
-                        style: const TextStyle(fontSize: 12),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${d.doseMin}-${d.doseMax} mg/kg  |  ${d.route}  |  ${d.birds}',
+                              style: const TextStyle(fontSize: 12)),
+                          if (d.note.isNotEmpty)
+                            Row(
+                              children: [
+                                Icon(Icons.info_outline, size: 12, color: Colors.orange.shade600),
+                                const SizedBox(width: 3),
+                                Flexible(
+                                  child: Text(d.note, style: TextStyle(fontSize: 11, color: Colors.orange.shade600)),
+                                ),
+                              ],
+                            ),
+                        ],
                       ),
                       trailing: Chip(label: Text(d.category, style: const TextStyle(fontSize: 11))),
                       onTap: () => _selectDrug(d),
@@ -257,6 +270,20 @@ class _CalcScreenState extends State<CalcScreen> {
                           Text(_selectedDrug!.name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
                           Text('${_selectedDrug!.doseMin}-${_selectedDrug!.doseMax} mg/kg, ${_selectedDrug!.route}, ${_selectedDrug!.freq}',
                               style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                          if (_selectedDrug!.note.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.info_outline, size: 13, color: Colors.orange.shade700),
+                                  const SizedBox(width: 4),
+                                  Flexible(
+                                    child: Text(_selectedDrug!.note,
+                                        style: TextStyle(fontSize: 11, color: Colors.orange.shade700)),
+                                  ),
+                                ],
+                              ),
+                            ),
                         ],
                       ),
               ),
