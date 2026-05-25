@@ -147,7 +147,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
     final _allSymptoms = serverSymptoms.map((s) => s['name'] as String).toList();
     final _selectedSymptoms = <String>{};
     final notesCtrl = TextEditingController(text: isFasting ? '' : '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')} 未空腹');
-    String? photoPath;
+    final _photoPaths = <String>[];
     final pending = _pendingWeighItems;
     final remaining = pending.length;
     final curIdx = pending.indexOf(item);
@@ -290,38 +290,46 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                               )),
                               const SizedBox(width: 6),
                               IconButton(
-                                icon: Icon(photoPath != null ? Icons.camera_alt : Icons.camera_alt_outlined,
-                                  color: photoPath != null ? Colors.green : Colors.grey),
+                                icon: Icon(_photoPaths.isNotEmpty ? Icons.camera_alt : Icons.camera_alt_outlined,
+                                  color: _photoPaths.isNotEmpty ? Colors.green : Colors.grey),
                                 onPressed: () async {
                                   final picker = ImagePicker();
                                   final photo = await picker.pickImage(source: ImageSource.camera);
-                                  if (photo != null) setDialogState(() => photoPath = photo.path);
+                                  if (photo != null) setDialogState(() => _photoPaths.add(photo.path));
                                 },
                               ),
                             ]),
-                            // 照片预览（可删除）
-                            if (photoPath != null)
+                            // 照片预览（多张，可分别删除）
+                            if (_photoPaths.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsets.only(top: 6),
-                                child: Row(
+                                child: Wrap(
+                                  spacing: 6,
+                                  runSpacing: 6,
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(6),
-                                      child: Image.file(File(photoPath!), height: 48, width: 48, fit: BoxFit.cover),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text('已拍照', style: TextStyle(fontSize: 11, color: Colors.green[700])),
-                                    const Spacer(),
-                                    TextButton.icon(
-                                      icon: const Icon(Icons.delete_outline, size: 14),
-                                      label: const Text('删除', style: TextStyle(fontSize: 11)),
-                                      onPressed: () => setDialogState(() => photoPath = null),
-                                      style: TextButton.styleFrom(
-                                        foregroundColor: Colors.red[400],
-                                        padding: const EdgeInsets.symmetric(horizontal: 6),
-                                        minimumSize: Size.zero,
+                                    for (var i = 0; i < _photoPaths.length; i++)
+                                      Stack(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(6),
+                                            child: Image.file(File(_photoPaths[i]), height: 52, width: 52, fit: BoxFit.cover),
+                                          ),
+                                          Positioned(
+                                            top: -4, right: -4,
+                                            child: GestureDetector(
+                                              onTap: () => setDialogState(() => _photoPaths.removeAt(i)),
+                                              child: Container(
+                                                width: 18, height: 18,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.black54,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: const Icon(Icons.close, size: 12, color: Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
                                   ],
                                 ),
                               ),
