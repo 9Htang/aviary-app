@@ -142,11 +142,10 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
     final weightCtrl = TextEditingController(text: '');
     bool isFasting = item.isFasting == 1;
     final now = DateTime.now();
-    final timeStr = '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
-    final notesCtrl = TextEditingController(text: isFasting ? '' : '$timeStr 未空腹');
+    final _symptomList = ['精神萎靡', '食欲不振', '体重下降', '腹泻', '呼吸困难', '打喷嚏', '眼部红肿'];
+    final notesCtrl = TextEditingController(text: isFasting ? '' : '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')} 未空腹');
     String? photoPath;
-    int? _selectedSymptomId;
-    final _symptoms = <Map<String, dynamic>>[];
+    String? _selectedSymptomName; // null=正常, else=选中症状
     final pending = _pendingWeighItems;
     final remaining = pending.length;
     final curIdx = pending.indexOf(item);
@@ -198,6 +197,26 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 16),
+                    // 症状选择
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 4,
+                      children: [
+                        ChoiceChip(
+                          label: const Text('正常', style: TextStyle(fontSize: 13)),
+                          selected: _selectedSymptomName == null,
+                          selectedColor: Colors.green.shade100,
+                          onSelected: (_) => setDialogState(() => _selectedSymptomName = null),
+                        ),
+                        ..._symptomList.map((name) => ChoiceChip(
+                          label: Text(name, style: const TextStyle(fontSize: 13)),
+                          selected: _selectedSymptomName == name,
+                          selectedColor: Colors.orange.shade100,
+                          onSelected: (_) => setDialogState(() => _selectedSymptomName = name),
+                        )),
+                      ],
+                    ),
                     const SizedBox(height: 12),
                     Row(children: [
                       Expanded(child: TextField(
@@ -226,7 +245,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                   ],
                 ),
               ),
-              // 右上角 ❌ 退出
+              // 右上角退出
               Positioned(
                 top: 8, right: 8,
                 child: IconButton(
@@ -242,6 +261,54 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                     TextButton(
                       onPressed: () => Navigator.pop(ctx, 'skip'),
                       child: const Text('跳过', style: TextStyle(color: Colors.grey)),
+                    ),
+                    const SizedBox(width: 4),
+                    // 上传病历（有症状时可点）
+                    ElevatedButton.icon(
+                      icon: Icon(Icons.medical_services, size: 14),
+                      label: const Text('上传病历', style: TextStyle(fontSize: 11)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: (_selectedSymptomName != null && !isFasting)
+                            ? Colors.orange.shade700 : Colors.grey.shade300,
+                        foregroundColor: (_selectedSymptomName != null && !isFasting)
+                            ? Colors.white : Colors.grey.shade500,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        minimumSize: Size.zero,
+                        disabledBackgroundColor: Colors.grey.shade300,
+                        disabledForegroundColor: Colors.grey.shade500,
+                      ),
+                      onPressed: (_selectedSymptomName != null && !isFasting)
+                          ? () async {
+                              try {
+                                var record = await _medicalService.getLatestActiveRecord(item.birdId);
+                                if (record == null) {
+                                  record = await _medicalService.createRecord(item.birdId,
+                                    notes: '称重时记录' + (notesCtrl.text.isNotEmpty ? ': ' + notesCtrl.text : ''));
+                                }
+                                final allSymptoms = await _medicalService.getSymptoms();
+                                final matched = allSymptoms.cast<Map<String, dynamic>>().firstWhere(
+                                  (s) => s['name'] == _selectedSymptomName,
+                                  orElse: () => <String, dynamic>{},
+                                );
+                                if (matched.isNotEmpty) {
+                                  await _medicalService.addSymptom(
+                                    record!['id'] as int, matched['id'] as int,
+                                    notes: notesCtrl.text.isNotEmpty ? notesCtrl.text : null,
+                                  );
+                                  if (!ctx.mounted) return;
+                                  ScaffoldMessenger.of(ctx).showSnackBar(
+                                    const SnackBar(content: Text('\u2705 已上传到病历'), backgroundColor: Colors.green),
+                                  );
+                                  setDialogState(() => _selectedSymptomName = null);
+                                }
+                              } catch (e) {
+                                if (!ctx.mounted) return;
+                                ScaffoldMessenger.of(ctx).showSnackBar(
+                                  SnackBar(content: Text(friendlyError(e).message)),
+                                );
+                              }
+                            }
+                          : null,
                     ),
                     const Spacer(),
                     ElevatedButton(
