@@ -4,6 +4,7 @@ import 'dart:io';
 import '../utils/error_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import '../services/task_service.dart';
+import '../services/medical_service.dart';
 import '../services/bird_service.dart';
 import '../services/auth_service.dart';
 import '../models/task.dart';
@@ -23,6 +24,7 @@ class HomeTaskScreen extends StatefulWidget {
 class _HomeTaskScreenState extends State<HomeTaskScreen> {
   final TaskService _taskService = TaskService();
   final BirdService _birdService = BirdService();
+  final MedicalService _medicalService = MedicalService();
   List<Task> _tasks = [];
   bool _loading = true;
   String? _error;
@@ -143,6 +145,8 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
     final timeStr = '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
     final notesCtrl = TextEditingController(text: isFasting ? '' : '$timeStr 未空腹');
     String? photoPath;
+    int? _selectedSymptomId;
+    final _symptoms = <Map<String, dynamic>>[];
     final pending = _pendingWeighItems;
     final remaining = pending.length;
     final curIdx = pending.indexOf(item);
