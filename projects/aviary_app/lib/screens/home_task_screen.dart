@@ -153,194 +153,240 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
     final result = await showDialog<String>(
       context: context,
       builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setDialogState) => Dialog(
-          child: Stack(
-            children: [
-              // 主内容
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 56, 24, 72),
+        builder: (ctx, setDialogState) {
+          final hasSymptom = _selectedSymptomName != null && !isFasting;
+          return Dialog(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 520),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('\u{1F99C} ${item.birdName ?? "鸟#" + item.birdId.toString()}',
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 4),
-                    if (curIdx >= 0)
-                      Text('剩余 ${remaining - curIdx} 只待称重',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[500])),
-                    const SizedBox(height: 20),
-                    TextField(
-                      controller: weightCtrl,
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        labelText: '体重 (g)',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
+                    // 标题栏
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('空腹状态: '),
+                        const Text('\u{1F99C}', style: TextStyle(fontSize: 22)),
                         const SizedBox(width: 8),
-                        ChoiceChip(
-                          label: const Text('空腹'),
-                          selected: isFasting,
-                          onSelected: (v) => setDialogState(() => isFasting = true),
+                        Expanded(
+                          child: Text('${item.birdName ?? "鸟#" + item.birdId.toString()}',
+                            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
                         ),
-                        const SizedBox(width: 8),
-                        ChoiceChip(
-                          label: const Text('未空腹'),
-                          selected: !isFasting,
-                          onSelected: (v) => setDialogState(() => isFasting = false),
+                        if (curIdx >= 0)
+                          Text('${remaining - curIdx} 只', style: TextStyle(fontSize: 12, color: Colors.grey[500])),
+                        IconButton(
+                          icon: const Icon(Icons.close, color: Colors.black, size: 20),
+                          onPressed: () => Navigator.pop(ctx, 'exit'),
+                          constraints: const BoxConstraints(),
+                          padding: EdgeInsets.zero,
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    // 症状下拉菜单
-                    DropdownButtonFormField<String>(
-                      value: _selectedSymptomName,
-                      decoration: const InputDecoration(
-                        labelText: '症状（正常=不上传病历）',
-                        border: OutlineInputBorder(),
-                        isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                      ),
-                      isExpanded: true,
-                      items: [
-                        const DropdownMenuItem(value: null, child: Text('正常')),
-                        ..._symptomList.map((name) => DropdownMenuItem(
-                          value: name,
-                          child: Text(name),
-                        )),
-                      ],
-                      onChanged: (v) => setDialogState(() => _selectedSymptomName = v),
-                    ),
-                    const SizedBox(height: 12),
-                    Row(children: [
-                      Expanded(child: TextField(
-                        controller: notesCtrl,
-                        decoration: const InputDecoration(
-                          labelText: '备注',
-                          border: OutlineInputBorder(),
-                          isDense: true,
+                    const Divider(height: 12),
+                    // 可滚动内容
+                    Flexible(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextField(
+                              controller: weightCtrl,
+                              keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              autofocus: true,
+                              decoration: const InputDecoration(
+                                labelText: '体重 (g)',
+                                border: OutlineInputBorder(),
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text('空腹状态: ', style: TextStyle(fontSize: 13)),
+                                const SizedBox(width: 8),
+                                ChoiceChip(
+                                  label: const Text('空腹', style: TextStyle(fontSize: 13)),
+                                  selected: isFasting,
+                                  onSelected: (v) => setDialogState(() => isFasting = true),
+                                ),
+                                const SizedBox(width: 8),
+                                ChoiceChip(
+                                  label: const Text('未空腹', style: TextStyle(fontSize: 13)),
+                                  selected: !isFasting,
+                                  onSelected: (v) => setDialogState(() => isFasting = false),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            // 症状下拉
+                            DropdownButtonFormField<String>(
+                              value: _selectedSymptomName,
+                              decoration: const InputDecoration(
+                                labelText: '症状（正常=不上传病历）',
+                                border: OutlineInputBorder(),
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              ),
+                              isExpanded: true,
+                              items: [
+                                const DropdownMenuItem(value: null, child: Text('正常')),
+                                ..._symptomList.map((name) => DropdownMenuItem(
+                                  value: name,
+                                  child: Text(name),
+                                )),
+                              ],
+                              onChanged: (v) => setDialogState(() => _selectedSymptomName = v),
+                            ),
+                            const SizedBox(height: 12),
+                            // 备注 + 相机
+                            Row(children: [
+                              Expanded(child: TextField(
+                                controller: notesCtrl,
+                                decoration: const InputDecoration(
+                                  labelText: '备注',
+                                  border: OutlineInputBorder(),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                ),
+                              )),
+                              const SizedBox(width: 6),
+                              IconButton(
+                                icon: Icon(photoPath != null ? Icons.camera_alt : Icons.camera_alt_outlined,
+                                  color: photoPath != null ? Colors.green : Colors.grey),
+                                onPressed: () async {
+                                  final picker = ImagePicker();
+                                  final photo = await picker.pickImage(source: ImageSource.camera);
+                                  if (photo != null) setDialogState(() => photoPath = photo.path);
+                                },
+                              ),
+                            ]),
+                            // 照片预览（可选，可删除）
+                            if (photoPath != null)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 6),
+                                child: Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(6),
+                                      child: Image.file(File(photoPath!), height: 48, width: 48, fit: BoxFit.cover),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text('已拍照', style: TextStyle(fontSize: 11, color: Colors.green[700])),
+                                    const Spacer(),
+                                    TextButton.icon(
+                                      icon: const Icon(Icons.delete_outline, size: 14),
+                                      label: const Text('删除', style: TextStyle(fontSize: 11)),
+                                      onPressed: () => setDialogState(() => photoPath = null),
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: Colors.red[400],
+                                        padding: const EdgeInsets.symmetric(horizontal: 6),
+                                        minimumSize: Size.zero,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                          ],
                         ),
-                      )),
-                      const SizedBox(width: 8),
-                      IconButton(
-                        icon: Icon(photoPath != null ? Icons.camera_alt : Icons.camera_alt_outlined,
-                          color: photoPath != null ? Colors.green : null),
-                        onPressed: () async {
-                          final picker = ImagePicker();
-                          final photo = await picker.pickImage(source: ImageSource.camera);
-                          if (photo != null) setDialogState(() => photoPath = photo.path);
-                        },
                       ),
-                    ]),
-                    if (photoPath != null)
-                      Padding(padding: const EdgeInsets.only(top: 8),
-                        child: ClipRRect(borderRadius: BorderRadius.circular(8),
-                          child: Image.file(File(photoPath!), height: 60, width: 60, fit: BoxFit.cover))),
-                  ],
-                ),
-              ),
-              // 右上角退出
-              Positioned(
-                top: 8, right: 8,
-                child: IconButton(
-                  icon: const Icon(Icons.close, color: Colors.black),
-                  onPressed: () => Navigator.pop(ctx, 'exit'),
-                ),
-              ),
-              // 底部按钮行
-              Positioned(
-                bottom: 16, left: 16, right: 16,
-                child: Row(
-                  children: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(ctx, 'skip'),
-                      child: const Text('跳过', style: TextStyle(color: Colors.grey)),
                     ),
-                    const SizedBox(width: 4),
-                    // 上传病历（有症状时可点）
-                    ElevatedButton.icon(
-                      icon: Icon(Icons.medical_services, size: 14),
-                      label: const Text('上传病历', style: TextStyle(fontSize: 11)),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: (_selectedSymptomName != null && !isFasting)
-                            ? Colors.orange.shade700 : Colors.grey.shade300,
-                        foregroundColor: (_selectedSymptomName != null && !isFasting)
-                            ? Colors.white : Colors.grey.shade500,
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        minimumSize: Size.zero,
-                        disabledBackgroundColor: Colors.grey.shade300,
-                        disabledForegroundColor: Colors.grey.shade500,
-                      ),
-                      onPressed: (_selectedSymptomName != null && !isFasting)
-                          ? () async {
-                              try {
-                                var record = await _medicalService.getLatestActiveRecord(item.birdId);
-                                if (record == null) {
-                                  record = await _medicalService.createRecord(item.birdId,
-                                    notes: '称重时记录' + (notesCtrl.text.isNotEmpty ? ': ' + notesCtrl.text : ''));
-                                }
-                                final allSymptoms = await _medicalService.getSymptoms();
-                                final matched = allSymptoms.cast<Map<String, dynamic>>().firstWhere(
-                                  (s) => s['name'] == _selectedSymptomName,
-                                  orElse: () => <String, dynamic>{},
-                                );
-                                if (matched.isNotEmpty) {
-                                  await _medicalService.addSymptom(
-                                    record!['id'] as int, matched['id'] as int,
-                                    notes: notesCtrl.text.isNotEmpty ? notesCtrl.text : null,
+                    const SizedBox(height: 10),
+                    // 底部按钮行
+                    Row(
+                      children: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(ctx, 'skip'),
+                          child: const Text('跳过', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            minimumSize: Size.zero,
+                          ),
+                        ),
+                        const Spacer(),
+                        // 上传病历（与记录并继续统一风格）
+                        if (hasSymptom)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: ElevatedButton.icon(
+                              icon: const Icon(Icons.medical_services, size: 14),
+                              label: const Text('上传病历', style: TextStyle(fontSize: 12)),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange.shade700,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                minimumSize: Size.zero,
+                              ),
+                              onPressed: () async {
+                                try {
+                                  var record = await _medicalService.getLatestActiveRecord(item.birdId);
+                                  if (record == null) {
+                                    record = await _medicalService.createRecord(item.birdId,
+                                      notes: '称重时记录' + (notesCtrl.text.isNotEmpty ? ': ' + notesCtrl.text : ''));
+                                  }
+                                  final allSymptoms = await _medicalService.getSymptoms();
+                                  final matched = allSymptoms.cast<Map<String, dynamic>>().firstWhere(
+                                    (s) => s['name'] == _selectedSymptomName,
+                                    orElse: () => <String, dynamic>{},
                                   );
+                                  if (matched.isNotEmpty) {
+                                    await _medicalService.addSymptom(
+                                      record!['id'] as int, matched['id'] as int,
+                                      notes: notesCtrl.text.isNotEmpty ? notesCtrl.text : null,
+                                    );
+                                    if (!ctx.mounted) return;
+                                    ScaffoldMessenger.of(ctx).showSnackBar(
+                                      const SnackBar(content: Text('\u2705 已上传到病历'), backgroundColor: Colors.green, duration: Duration(seconds: 2)),
+                                    );
+                                    setDialogState(() => _selectedSymptomName = null);
+                                  }
+                                } catch (e) {
                                   if (!ctx.mounted) return;
                                   ScaffoldMessenger.of(ctx).showSnackBar(
-                                    const SnackBar(content: Text('\u2705 已上传到病历'), backgroundColor: Colors.green),
+                                    SnackBar(content: Text(friendlyError(e).message)),
                                   );
-                                  setDialogState(() => _selectedSymptomName = null);
                                 }
-                              } catch (e) {
-                                if (!ctx.mounted) return;
-                                ScaffoldMessenger.of(ctx).showSnackBar(
-                                  SnackBar(content: Text(friendlyError(e).message)),
-                                );
-                              }
+                              },
+                            ),
+                          ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 14),
+                          ),
+                          onPressed: () async {
+                            final w = double.tryParse(weightCtrl.text);
+                            if (w == null || w <= 0) {
+                              ScaffoldMessenger.of(ctx).showSnackBar(
+                                const SnackBar(content: Text('请输入有效体重')),
+                              );
+                              return;
                             }
-                          : null,
-                    ),
-                    const Spacer(),
-                    ElevatedButton(
-                      onPressed: () async {
-                        final w = double.tryParse(weightCtrl.text);
-                        if (w == null || w <= 0) {
-                          ScaffoldMessenger.of(ctx).showSnackBar(
-                            const SnackBar(content: Text('请输入有效体重')),
-                          );
-                          return;
-                        }
-                        try {
-                          await _birdService.addWeight(item.birdId, w,
-                              isFasting: isFasting, notes: notesCtrl.text.isNotEmpty ? notesCtrl.text : null);
-                          await _taskService.updateTaskItem(item.id, status: 'done', isFasting: isFasting ? 1 : 0);
-                          if (!ctx.mounted) return;
-                          Navigator.pop(ctx, 'record');
-                        } catch (e) {
-                          if (!ctx.mounted) return;
-                          ScaffoldMessenger.of(ctx).showSnackBar(
-                            SnackBar(content: Text(friendlyError(e).message)),
-                          );
-                        }
-                      },
-                      child: const Text('记录并继续'),
+                            try {
+                              await _birdService.addWeight(item.birdId, w,
+                                  isFasting: isFasting, notes: notesCtrl.text.isNotEmpty ? notesCtrl.text : null);
+                              await _taskService.updateTaskItem(item.id, status: 'done', isFasting: isFasting ? 1 : 0);
+                              if (!ctx.mounted) return;
+                              Navigator.pop(ctx, 'record');
+                            } catch (e) {
+                              if (!ctx.mounted) return;
+                              ScaffoldMessenger.of(ctx).showSnackBar(
+                                SnackBar(content: Text(friendlyError(e).message)),
+                              );
+                            }
+                          },
+                          child: const Text('记录并继续'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
 
