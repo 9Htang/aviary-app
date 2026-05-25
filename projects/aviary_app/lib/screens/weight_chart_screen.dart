@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../services/bird_service.dart';
 import '../models/weight_record.dart';
+import '../utils/error_helper.dart';
 
 class WeightChartScreen extends StatefulWidget {
   final int birdId;
@@ -321,7 +322,7 @@ class _WeightChartScreenState extends State<WeightChartScreen> {
               } catch (e) {
                 if (!ctx.mounted) return;
                 ScaffoldMessenger.of(ctx).showSnackBar(
-                  SnackBar(content: Text('记录失败: $e')),
+                  SnackBar(content: Text(friendlyError(e))),
                 );
               }
             },

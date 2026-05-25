@@ -6,6 +6,7 @@
 workspace/
 ├── projects/
 │   ├── aviary/       # 🦜 鸟舍管理系统 — Express + SQLite
+│   ├── aviary_app/   # 📱 鸟舍管理手机端 — Flutter
 │   └── med_calc/     # 🩺 鹦鹉药物计算器 — Flutter
 ├── memory/
 ├── node_modules/
@@ -14,6 +15,7 @@ workspace/
 
 每个项目有独立 git 仓库。
 aviary 远程：github.com/9Htang/parrot-manager
+aviary_app 远程：github.com/9Htang/aviary-app
 med_calc 远程：github.com/9Htang/med-calc
 
 ## 鸟舍管理系统（2026-05-23 起）

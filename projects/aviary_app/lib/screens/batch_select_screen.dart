@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/task_service.dart';
+import '../utils/error_helper.dart';
 import '../models/bird.dart';
 
 class BatchSelectScreen extends StatefulWidget {
@@ -44,7 +45,7 @@ class _BatchSelectScreenState extends State<BatchSelectScreen> {
       if (!mounted) return;
       setState(() => _loading = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('加载失败: $e')),
+        SnackBar(content: Text(friendlyError(e))),
       );
     }
   }
@@ -121,7 +122,7 @@ class _BatchSelectScreenState extends State<BatchSelectScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('操作失败: $e')),
+        SnackBar(content: Text(friendlyError(e))),
       );
     }
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../utils/error_helper.dart';
 import '../services/task_service.dart';
 import '../services/bird_service.dart';
 import '../services/auth_service.dart';
@@ -42,7 +43,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
       }
     } catch (e) {
       if (!mounted) return;
-      setState(() { _error = '加载失败: $e'; _loading = false; });
+      setState(() { _error = friendlyError(e); _loading = false; });
     }
   }
 
@@ -53,7 +54,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
       setState(() { _tasks = [task]; _loading = false; });
     } catch (e) {
       if (!mounted) return;
-      setState(() { _error = '自动生成失败: $e'; _loading = false; });
+      setState(() { _error = friendlyError(e); _loading = false; });
     }
   }
 
@@ -93,7 +94,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('操作失败: $e')),
+        SnackBar(content: Text(friendlyError(e))),
       );
     }
   }
@@ -225,7 +226,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                         } catch (e) {
                           if (!ctx.mounted) return;
                           ScaffoldMessenger.of(ctx).showSnackBar(
-                            SnackBar(content: Text('记录失败: $e')),
+                            SnackBar(content: Text(friendlyError(e))),
                           );
                         }
                       },
@@ -424,7 +425,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
         const SnackBar(content: Text('全部完成！'), backgroundColor: Colors.green));
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('操作失败: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(friendlyError(e))));
     }
   }
 

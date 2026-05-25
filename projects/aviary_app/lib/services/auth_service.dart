@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'api_client.dart';
+import '../utils/error_helper.dart';
 
 /// 登录结果
 class LoginResult {
@@ -80,7 +81,7 @@ class AuthService extends ChangeNotifier {
       return LoginResult.networkError('无法连接到服务器\n请确认手机和电脑在同一WiFi，且服务器已启动');
     } catch (e) {
       debugPrint('Login error: $e');
-      return LoginResult.networkError('连接服务器失败: $e');
+      return LoginResult.networkError(friendlyError(e));
     }
   }
 

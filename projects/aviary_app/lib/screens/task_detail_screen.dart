@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/task_service.dart';
 import '../models/task.dart';
 import '../widgets/task_item_card.dart';
+import '../utils/error_helper.dart';
 
 class TaskDetailScreen extends StatefulWidget {
   final int taskId;
@@ -32,7 +33,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
       if (!mounted) return;
       setState(() => _loading = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('加载失败: $e')),
+        SnackBar(content: Text(friendlyError(e))),
       );
     }
   }
