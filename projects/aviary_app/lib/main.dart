@@ -4,6 +4,7 @@ import 'services/auth_service.dart';
 import 'screens/home_task_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/splash_screen.dart';
+import 'widgets/dev_overlay.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,7 @@ class AviaryApp extends StatelessWidget {
         Locale('zh', 'CN'),
         Locale('en', 'US'),
       ],
+      builder: (context, child) => DevOverlay(child: child ?? const SizedBox()),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF2E7D32),

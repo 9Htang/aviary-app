@@ -33,7 +33,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
       if (!mounted) return;
       setState(() => _loading = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(friendlyError(e))),
+        SnackBar(content: Text(friendlyError(e).message)),
       );
     }
   }

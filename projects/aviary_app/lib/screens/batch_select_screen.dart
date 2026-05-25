@@ -25,6 +25,7 @@ class _BatchSelectScreenState extends State<BatchSelectScreen> {
   List<Bird> _filteredBirds = [];
   bool _loading = true;
   String _searchQuery = '';
+  String? _selectedFilter; // null=全部, 其他=对应分类
 
   @override
   void initState() {
@@ -40,12 +41,13 @@ class _BatchSelectScreenState extends State<BatchSelectScreen> {
       _allBirds = candidates['all'] ?? [];
       _groupedBirds = _groupByReason(_allBirds);
       _filteredBirds = _allBirds;
+      _selectedFilter = null;
       setState(() => _loading = false);
     } catch (e) {
       if (!mounted) return;
       setState(() => _loading = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(friendlyError(e))),
+        SnackBar(content: Text(friendlyError(e).message)),
       );
     }
   }
@@ -122,7 +124,7 @@ class _BatchSelectScreenState extends State<BatchSelectScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(friendlyError(e))),
+        SnackBar(content: Text(friendlyError(e).message)),
       );
     }
   }
@@ -175,10 +177,10 @@ class _BatchSelectScreenState extends State<BatchSelectScreen> {
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       children: [
-                        _filterChip('全部', null),
-                        _filterChip('🪺 雏鸟', 'nestling'),
-                        _filterChip('🤒 病鸟', 'sick'),
-                        _filterChip('⚖️ 到期称重', 'due_weigh'),
+                        _filterChip('全部', null, Icons.all_inclusive),
+                        _filterChip('🪺 雏鸟', 'nestling', Icons.egg),
+                        _filterChip('🤒 病鸟', 'sick', Icons.sick),
+                        _filterChip('⚖️ 到期称重', 'due_weigh', Icons.monitor_weight),
                       ],
                     ),
                   ),
@@ -246,24 +248,33 @@ class _BatchSelectScreenState extends State<BatchSelectScreen> {
     );
   }
 
-  Widget _filterChip(String label, String? reason) {
+  Widget _filterChip(String label, String? reason, IconData icon) {
+    final isSelected = _selectedFilter == reason;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: FilterChip(
+        avatar: isSelected
+            ? const Icon(Icons.check, size: 16, color: Colors.white)
+            : Icon(icon, size: 16, color: Colors.grey[600]),
         label: Text(label, style: const TextStyle(fontSize: 13)),
-        selected: _searchQuery.isEmpty && reason == null,
+        selected: isSelected,
+        selectedColor: Colors.green,
+        checkmarkColor: Colors.white,
+        labelStyle: TextStyle(
+          fontSize: 13,
+          color: isSelected ? Colors.white : null,
+          fontWeight: isSelected ? FontWeight.bold : null,
+        ),
         onSelected: (_) {
-          if (reason == null) {
-            setState(() {
+          setState(() {
+            _selectedFilter = reason;
+            _searchQuery = '';
+            if (reason == null) {
               _filteredBirds = _allBirds;
-              _searchQuery = '';
-            });
-          } else {
-            setState(() {
+            } else {
               _filteredBirds = _groupedBirds[reason] ?? [];
-              _searchQuery = '';
-            });
-          }
+            }
+          });
         },
       ),
     );

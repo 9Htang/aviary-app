@@ -81,7 +81,7 @@ class AuthService extends ChangeNotifier {
       return LoginResult.networkError('无法连接到服务器\n请确认手机和电脑在同一WiFi，且服务器已启动');
     } catch (e) {
       debugPrint('Login error: $e');
-      return LoginResult.networkError(friendlyError(e));
+      return LoginResult.networkError(friendlyError(e).message);
     }
   }
 

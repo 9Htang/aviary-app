@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import '../config/api.dart';
+import '../utils/dev_utils.dart';
 
 /// HTTP API 客户端（使用 dart:io HttpClient，手动管理 session cookie）
 class ApiClient {
@@ -31,6 +32,7 @@ class ApiClient {
     _addHeaders(request);
     final response = await request.close();
     _saveCookies(response.headers);
+    DevApiLogger.record('GET', path, response.statusCode, '');
     return _handle(response);
   }
 
@@ -44,10 +46,11 @@ class ApiClient {
     request.write(jsonEncode(body ?? {}));
     final response = await request.close();
     _saveCookies(response.headers);
+    DevApiLogger.record('POST', path, response.statusCode, '');
     return _handle(response);
   }
 
-  Future<Map<String, dynamic>> patch(String path, {Map<String, dynamic>? body}) async {
+  Future<Map<String, dynamic>> patch(String path,{Map<String, dynamic>? body}) async {
     final uri = Uri.parse('$baseUrl$path');
     final request = await _client.patchUrl(uri);
     _addHeaders(request);
@@ -57,6 +60,7 @@ class ApiClient {
     request.write(jsonEncode(body ?? {}));
     final response = await request.close();
     _saveCookies(response.headers);
+    DevApiLogger.record('PATCH', path, response.statusCode, '');
     return _handle(response);
   }
 
@@ -69,6 +73,7 @@ class ApiClient {
     }
     final response = await request.close();
     _saveCookies(response.headers);
+    DevApiLogger.record('DELETE', path, response.statusCode, '');
     return _handle(response);
   }
 

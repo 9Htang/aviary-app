@@ -322,7 +322,7 @@ class _WeightChartScreenState extends State<WeightChartScreen> {
               } catch (e) {
                 if (!ctx.mounted) return;
                 ScaffoldMessenger.of(ctx).showSnackBar(
-                  SnackBar(content: Text(friendlyError(e))),
+                  SnackBar(content: Text(friendlyError(e).message)),
                 );
               }
             },

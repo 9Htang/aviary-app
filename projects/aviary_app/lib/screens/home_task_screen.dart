@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:io';
 import '../utils/error_helper.dart';
+import 'package:image_picker/image_picker.dart';
 import '../services/task_service.dart';
 import '../services/bird_service.dart';
 import '../services/auth_service.dart';
@@ -43,7 +45,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
       }
     } catch (e) {
       if (!mounted) return;
-      setState(() { _error = friendlyError(e); _loading = false; });
+      setState(() { _error = friendlyError(e).message; _loading = false; });
     }
   }
 
@@ -54,7 +56,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
       setState(() { _tasks = [task]; _loading = false; });
     } catch (e) {
       if (!mounted) return;
-      setState(() { _error = friendlyError(e); _loading = false; });
+      setState(() { _error = friendlyError(e).message; _loading = false; });
     }
   }
 
@@ -94,7 +96,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(friendlyError(e))),
+        SnackBar(content: Text(friendlyError(e).message)),
       );
     }
   }
@@ -137,6 +139,10 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
   Future<String> _showWeighDialog(TaskItem item) async {
     final weightCtrl = TextEditingController(text: '');
     bool isFasting = item.isFasting == 1;
+    final now = DateTime.now();
+    final timeStr = '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
+    final notesCtrl = TextEditingController(text: isFasting ? '' : '$timeStr 未空腹');
+    String? photoPath;
     final pending = _pendingWeighItems;
     final remaining = pending.length;
     final curIdx = pending.indexOf(item);
@@ -188,6 +194,31 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 12),
+                    Row(children: [
+                      Expanded(child: TextField(
+                        controller: notesCtrl,
+                        decoration: const InputDecoration(
+                          labelText: '备注',
+                          border: OutlineInputBorder(),
+                          isDense: true,
+                        ),
+                      )),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        icon: Icon(photoPath != null ? Icons.camera_alt : Icons.camera_alt_outlined,
+                          color: photoPath != null ? Colors.green : null),
+                        onPressed: () async {
+                          final picker = ImagePicker();
+                          final photo = await picker.pickImage(source: ImageSource.camera);
+                          if (photo != null) setDialogState(() => photoPath = photo.path);
+                        },
+                      ),
+                    ]),
+                    if (photoPath != null)
+                      Padding(padding: const EdgeInsets.only(top: 8),
+                        child: ClipRRect(borderRadius: BorderRadius.circular(8),
+                          child: Image.file(File(photoPath!), height: 60, width: 60, fit: BoxFit.cover))),
                   ],
                 ),
               ),
@@ -219,14 +250,15 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                           return;
                         }
                         try {
-                          await _birdService.addWeight(item.birdId, w, isFasting: isFasting);
+                          await _birdService.addWeight(item.birdId, w,
+                              isFasting: isFasting, notes: notesCtrl.text.isNotEmpty ? notesCtrl.text : null);
                           await _taskService.updateTaskItem(item.id, status: 'done', isFasting: isFasting ? 1 : 0);
                           if (!ctx.mounted) return;
                           Navigator.pop(ctx, 'record');
                         } catch (e) {
                           if (!ctx.mounted) return;
                           ScaffoldMessenger.of(ctx).showSnackBar(
-                            SnackBar(content: Text(friendlyError(e))),
+                            SnackBar(content: Text(friendlyError(e).message)),
                           );
                         }
                       },
@@ -248,7 +280,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('喂药 — ${item.birdName ?? "鸟#" + item.birdId.toString()}'),
+        title: Text('喂药 — ${item.birdName ?? "鸟#" + item.birdId.toString()}${item.birdRing != null && item.birdRing!.isNotEmpty ? ' (' + item.birdRing! + ')' : ''}'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -425,7 +457,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
         const SnackBar(content: Text('全部完成！'), backgroundColor: Colors.green));
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(friendlyError(e).message)));
     }
   }
 
