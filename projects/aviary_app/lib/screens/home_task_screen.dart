@@ -222,36 +222,55 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                               ],
                             ),
                             const SizedBox(height: 12),
-                            // 症状下拉
+                            // 症状多选（弹窗）
                             InkWell(
-                              onTap: () async {
-                                final result = await showMenu<String>(
+                              onTap: () {
+                                showDialog(
                                   context: ctx,
-                                  position: RelativeRect.fromLTRB(1000, 400, 1000, 400),
-                                  initialValue: null,
-                                  items: [
-                                    const PopupMenuItem(value: null, child: Text('正常（清除选择）')),
-                                    const PopupMenuDivider(),
-                                    ..._allSymptoms.map((name) {
-                                      final sel = _selectedSymptoms.contains(name);
-                                      return CheckedPopupMenuItem(
-                                        value: name,
-                                        checked: sel,
-                                        child: Text(name, style: const TextStyle(fontSize: 14)),
-                                      );
-                                    }),
-                                  ],
+                                  builder: (dCtx) => StatefulBuilder(
+                                    builder: (dCtx, dSetState) => AlertDialog(
+                                      title: const Text('选择症状（可多选）'),
+                                      content: SizedBox(
+                                        width: double.maxFinite,
+                                        child: ListView(
+                                          shrinkWrap: true,
+                                          children: _allSymptoms.map((name) {
+                                            final sel = _selectedSymptoms.contains(name);
+                                            return CheckboxListTile(
+                                              title: Text(name),
+                                              value: sel,
+                                              dense: true,
+                                              onChanged: (v) {
+                                                dSetState(() {
+                                                  if (v == true) {
+                                                    _selectedSymptoms.add(name);
+                                                  } else {
+                                                    _selectedSymptoms.remove(name);
+                                                  }
+                                                });
+                                                setDialogState(() {});
+                                              },
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            _selectedSymptoms.clear();
+                                            dSetState(() {});
+                                            setDialogState(() {});
+                                          },
+                                          child: const Text('清除全部'),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () => Navigator.pop(dCtx),
+                                          child: const Text('确认'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 );
-                                if (result == null) return;
-                                setDialogState(() {
-                                  if (result == null) {
-                                    _selectedSymptoms.clear();
-                                  } else if (_selectedSymptoms.contains(result)) {
-                                    _selectedSymptoms.remove(result);
-                                  } else {
-                                    _selectedSymptoms.add(result);
-                                  }
-                                });
                               },
                               child: Container(
                                 width: double.infinity,
@@ -282,24 +301,6 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                                 ),
                               ),
                             ),
-                            // 已选症状气泡
-                            if (_selectedSymptoms.isNotEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: Wrap(
-                                  spacing: 4,
-                                  runSpacing: 2,
-                                  children: _selectedSymptoms.map((name) => InputChip(
-                                    label: Text(name, style: const TextStyle(fontSize: 11)),
-                                    selected: true,
-                                    selectedColor: Colors.orange.shade100,
-                                    deleteIcon: const Icon(Icons.close, size: 13, color: Colors.red),
-                                    onDeleted: () => setDialogState(() => _selectedSymptoms.remove(name)),
-                                    visualDensity: VisualDensity.compact,
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  )).toList(),
-                                ),
-                              ),
                             // 备注 + 相机
                             Row(children: [
                               Expanded(child: TextField(
