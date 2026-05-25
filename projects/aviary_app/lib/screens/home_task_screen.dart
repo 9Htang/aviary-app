@@ -198,24 +198,24 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    // 症状选择
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 4,
-                      children: [
-                        ChoiceChip(
-                          label: const Text('正常', style: TextStyle(fontSize: 13)),
-                          selected: _selectedSymptomName == null,
-                          selectedColor: Colors.green.shade100,
-                          onSelected: (_) => setDialogState(() => _selectedSymptomName = null),
-                        ),
-                        ..._symptomList.map((name) => ChoiceChip(
-                          label: Text(name, style: const TextStyle(fontSize: 13)),
-                          selected: _selectedSymptomName == name,
-                          selectedColor: Colors.orange.shade100,
-                          onSelected: (_) => setDialogState(() => _selectedSymptomName = name),
+                    // 症状下拉菜单
+                    DropdownButtonFormField<String>(
+                      value: _selectedSymptomName,
+                      decoration: const InputDecoration(
+                        labelText: '症状（正常=不上传病历）',
+                        border: OutlineInputBorder(),
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      ),
+                      isExpanded: true,
+                      items: [
+                        const DropdownMenuItem(value: null, child: Text('正常')),
+                        ..._symptomList.map((name) => DropdownMenuItem(
+                          value: name,
+                          child: Text(name),
                         )),
                       ],
+                      onChanged: (v) => setDialogState(() => _selectedSymptomName = v),
                     ),
                     const SizedBox(height: 12),
                     Row(children: [
