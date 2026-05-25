@@ -222,61 +222,84 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                               ],
                             ),
                             const SizedBox(height: 12),
-                            // 症状标题
-                            Row(
-                              children: [
-                                const Text('症状（可多选）: ', style: TextStyle(fontSize: 13, color: Colors.grey)),
-                                if (_selectedSymptoms.isNotEmpty)
-                                  TextButton(
-                                    onPressed: () => setDialogState(() => _selectedSymptoms.clear()),
-                                    child: const Text('清除', style: TextStyle(fontSize: 11)),
-                                    style: TextButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                                      minimumSize: Size.zero,
-                                      foregroundColor: Colors.grey,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            // 症状气泡（多选，带X删除）
-                            Wrap(
-                              spacing: 6,
-                              runSpacing: 6,
-                              children: [
-                                // "正常" 气泡 - 点它清空所有选择
-                                InputChip(
-                                  label: const Text('正常', style: TextStyle(fontSize: 13)),
-                                  selected: _selectedSymptoms.isEmpty,
-                                  selectedColor: Colors.green.shade100,
-                                  onSelected: (_) => setDialogState(() => _selectedSymptoms.clear()),
-                                  visualDensity: VisualDensity.compact,
+                            // 症状下拉
+                            InkWell(
+                              onTap: () async {
+                                final result = await showMenu<String>(
+                                  context: ctx,
+                                  position: RelativeRect.fromLTRB(1000, 400, 1000, 400),
+                                  initialValue: null,
+                                  items: [
+                                    const PopupMenuItem(value: null, child: Text('正常（清除选择）')),
+                                    const PopupMenuDivider(),
+                                    ..._allSymptoms.map((name) {
+                                      final sel = _selectedSymptoms.contains(name);
+                                      return CheckedPopupMenuItem(
+                                        value: name,
+                                        checked: sel,
+                                        child: Text(name, style: const TextStyle(fontSize: 14)),
+                                      );
+                                    }),
+                                  ],
+                                );
+                                if (result == null) return;
+                                setDialogState(() {
+                                  if (result == null) {
+                                    _selectedSymptoms.clear();
+                                  } else if (_selectedSymptoms.contains(result)) {
+                                    _selectedSymptoms.remove(result);
+                                  } else {
+                                    _selectedSymptoms.add(result);
+                                  }
+                                });
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey.shade400),
+                                  borderRadius: BorderRadius.circular(4),
                                 ),
-                                // 所有症状气泡
-                                ..._allSymptoms.map((name) {
-                                  final sel = _selectedSymptoms.contains(name);
-                                  return InputChip(
-                                    label: Text(name, style: TextStyle(fontSize: 13)),
-                                    selected: sel,
-                                    selectedColor: Colors.orange.shade100,
-                                    deleteIcon: sel
-                                        ? const Icon(Icons.close, size: 14, color: Colors.red)
-                                        : null,
-                                    onDeleted: sel
-                                        ? () => setDialogState(() => _selectedSymptoms.remove(name))
-                                        : null,
-                                    onSelected: (v) {
-                                      setDialogState(() {
-                                        if (v) { _selectedSymptoms.add(name); }
-                                        else { _selectedSymptoms.remove(name); }
-                                      });
-                                    },
-                                    visualDensity: VisualDensity.compact,
-                                  );
-                                }),
-                              ],
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.health_and_safety, size: 16, color: Colors.grey[600]),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        _selectedSymptoms.isEmpty
+                                            ? '点此选择症状（可多选）'
+                                            : _selectedSymptoms.length == 1
+                                                ? '${_selectedSymptoms.first}'
+                                                : '已选 ${_selectedSymptoms.length} 种症状',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: _selectedSymptoms.isEmpty ? Colors.grey[600] : Colors.black87,
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(Icons.arrow_drop_down, color: Colors.grey[600]),
+                                  ],
+                                ),
+                              ),
                             ),
-                            const SizedBox(height: 12),
+                            // 已选症状气泡
+                            if (_selectedSymptoms.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: Wrap(
+                                  spacing: 4,
+                                  runSpacing: 2,
+                                  children: _selectedSymptoms.map((name) => InputChip(
+                                    label: Text(name, style: const TextStyle(fontSize: 11)),
+                                    selected: true,
+                                    selectedColor: Colors.orange.shade100,
+                                    deleteIcon: const Icon(Icons.close, size: 13, color: Colors.red),
+                                    onDeleted: () => setDialogState(() => _selectedSymptoms.remove(name)),
+                                    visualDensity: VisualDensity.compact,
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  )).toList(),
+                                ),
+                              ),
                             // 备注 + 相机
                             Row(children: [
                               Expanded(child: TextField(
