@@ -132,7 +132,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
       final left = _pendingWeighItems.length;
       if (left == 0) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('✅ 所有称重已完成！'), backgroundColor: Colors.green),
+          SnackBar(content: Text('✅ 所有称重已完成！'), backgroundColor: Colors.green),
         );
       }
     }
@@ -144,10 +144,10 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
     final now = DateTime.now();
     // 从服务端加载症状列表
     final serverSymptoms = await _medicalService.getSymptoms();
-    final _symptomList = serverSymptoms.map((s) => s['name'] as String).toList();
+    final _allSymptoms = serverSymptoms.map((s) => s['name'] as String).toList();
+    final _selectedSymptoms = <String>{};
     final notesCtrl = TextEditingController(text: isFasting ? '' : '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')} 未空腹');
     String? photoPath;
-    String? _selectedSymptomName; // null=正常, else=选中症状
     final pending = _pendingWeighItems;
     final remaining = pending.length;
     final curIdx = pending.indexOf(item);
@@ -156,7 +156,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setDialogState) {
-          final hasSymptom = _selectedSymptomName != null;
+          final hasSymptom = _selectedSymptoms.isNotEmpty;
           return Dialog(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 520),
@@ -222,24 +222,59 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                               ],
                             ),
                             const SizedBox(height: 12),
-                            // 症状下拉
-                            DropdownButtonFormField<String>(
-                              value: _selectedSymptomName,
-                              decoration: const InputDecoration(
-                                labelText: '症状（正常=不上传病历）',
-                                border: OutlineInputBorder(),
-                                isDense: true,
-                                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                              ),
-                              isExpanded: true,
-                              items: [
-                                const DropdownMenuItem(value: null, child: Text('正常')),
-                                ..._symptomList.map((name) => DropdownMenuItem(
-                                  value: name,
-                                  child: Text(name),
-                                )),
+                            // 症状标题
+                            Row(
+                              children: [
+                                const Text('症状（可多选）: ', style: TextStyle(fontSize: 13, color: Colors.grey)),
+                                if (_selectedSymptoms.isNotEmpty)
+                                  TextButton(
+                                    onPressed: () => setDialogState(() => _selectedSymptoms.clear()),
+                                    child: const Text('清除', style: TextStyle(fontSize: 11)),
+                                    style: TextButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                                      minimumSize: Size.zero,
+                                      foregroundColor: Colors.grey,
+                                    ),
+                                  ),
                               ],
-                              onChanged: (v) => setDialogState(() => _selectedSymptomName = v),
+                            ),
+                            const SizedBox(height: 4),
+                            // 症状气泡（多选，带X删除）
+                            Wrap(
+                              spacing: 6,
+                              runSpacing: 6,
+                              children: [
+                                // "正常" 气泡 - 点它清空所有选择
+                                InputChip(
+                                  label: const Text('正常', style: TextStyle(fontSize: 13)),
+                                  selected: _selectedSymptoms.isEmpty,
+                                  selectedColor: Colors.green.shade100,
+                                  onSelected: (_) => setDialogState(() => _selectedSymptoms.clear()),
+                                  visualDensity: VisualDensity.compact,
+                                ),
+                                // 所有症状气泡
+                                ..._allSymptoms.map((name) {
+                                  final sel = _selectedSymptoms.contains(name);
+                                  return InputChip(
+                                    label: Text(name, style: TextStyle(fontSize: 13)),
+                                    selected: sel,
+                                    selectedColor: Colors.orange.shade100,
+                                    deleteIcon: sel
+                                        ? const Icon(Icons.close, size: 14, color: Colors.red)
+                                        : null,
+                                    onDeleted: sel
+                                        ? () => setDialogState(() => _selectedSymptoms.remove(name))
+                                        : null,
+                                    onSelected: (v) {
+                                      setDialogState(() {
+                                        if (v) { _selectedSymptoms.add(name); }
+                                        else { _selectedSymptoms.remove(name); }
+                                      });
+                                    },
+                                    visualDensity: VisualDensity.compact,
+                                  );
+                                }),
+                              ],
                             ),
                             const SizedBox(height: 12),
                             // 备注 + 相机
@@ -264,7 +299,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                                 },
                               ),
                             ]),
-                            // 照片预览（可选，可删除）
+                            // 照片预览（可删除）
                             if (photoPath != null)
                               Padding(
                                 padding: const EdgeInsets.only(top: 6),
@@ -295,7 +330,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    // 底部按钮行
+                    // 底部按钮行（上传病历与记录并继续同风格）
                     Row(
                       children: [
                         TextButton(
@@ -307,7 +342,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                           ),
                         ),
                         const Spacer(),
-                        // 上传病历（与记录并继续统一风格）
+                        // 上传病历（有症状时可点，风格与记录并继续统一）
                         if (hasSymptom)
                           Padding(
                             padding: const EdgeInsets.only(right: 8),
@@ -315,7 +350,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                               icon: const Icon(Icons.medical_services, size: 14),
                               label: const Text('上传病历', style: TextStyle(fontSize: 12)),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.orange.shade700,
+                                backgroundColor: Theme.of(context).colorScheme.primary,
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.symmetric(horizontal: 10),
                                 minimumSize: Size.zero,
@@ -328,21 +363,24 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                                       notes: '称重时记录' + (notesCtrl.text.isNotEmpty ? ': ' + notesCtrl.text : ''));
                                   }
                                   final allSymptoms = await _medicalService.getSymptoms();
-                                  final matched = allSymptoms.cast<Map<String, dynamic>>().firstWhere(
-                                    (s) => s['name'] == _selectedSymptomName,
-                                    orElse: () => <String, dynamic>{},
-                                  );
-                                  if (matched.isNotEmpty) {
-                                    await _medicalService.addSymptom(
-                                      record!['id'] as int, matched['id'] as int,
-                                      notes: notesCtrl.text.isNotEmpty ? notesCtrl.text : null,
+                                  for (final symName in _selectedSymptoms) {
+                                    final matched = allSymptoms.cast<Map<String, dynamic>>().firstWhere(
+                                      (s) => s['name'] == symName,
+                                      orElse: () => <String, dynamic>{},
                                     );
-                                    if (!ctx.mounted) return;
-                                    ScaffoldMessenger.of(ctx).showSnackBar(
-                                      const SnackBar(content: Text('\u2705 已上传到病历'), backgroundColor: Colors.green, duration: Duration(seconds: 2)),
-                                    );
-                                    setDialogState(() => _selectedSymptomName = null);
+                                    if (matched.isNotEmpty) {
+                                      await _medicalService.addSymptom(
+                                        record!['id'] as int, matched['id'] as int,
+                                        notes: notesCtrl.text.isNotEmpty ? notesCtrl.text : null,
+                                      );
+                                    }
                                   }
+                                  if (!ctx.mounted) return;
+                                  ScaffoldMessenger.of(ctx).showSnackBar(
+                                    SnackBar(content: Text('\u2705 已上传 ${_selectedSymptoms.length} 种症状到病历'),
+                                        backgroundColor: Colors.green, duration: Duration(seconds: 2)),
+                                  );
+                                  setDialogState(() => _selectedSymptoms.clear());
                                 } catch (e) {
                                   if (!ctx.mounted) return;
                                   ScaffoldMessenger.of(ctx).showSnackBar(
@@ -362,7 +400,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
                             final w = double.tryParse(weightCtrl.text);
                             if (w == null || w <= 0) {
                               ScaffoldMessenger.of(ctx).showSnackBar(
-                                const SnackBar(content: Text('请输入有效体重')),
+                                SnackBar(content: Text('请输入有效体重')),
                               );
                               return;
                             }
@@ -428,8 +466,8 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
     final picked = await showDatePicker(
       context: context,
       initialDate: DateTime.parse(_selectedDate),
-      firstDate: now.subtract(const Duration(days: 30)),
-      lastDate: now.add(const Duration(days: 7)),
+      firstDate: now.subtract(Duration(days: 30)),
+      lastDate: now.add(Duration(days: 7)),
     );
     if (picked != null) {
       setState(() { _selectedDate = DateFormat('yyyy-MM-dd').format(picked); });
@@ -573,7 +611,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
       await _loadTasks();
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('全部完成！'), backgroundColor: Colors.green));
+        SnackBar(content: Text('全部完成！'), backgroundColor: Colors.green));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(friendlyError(e).message)));
