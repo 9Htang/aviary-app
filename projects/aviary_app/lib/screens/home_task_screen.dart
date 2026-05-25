@@ -142,7 +142,9 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
     final weightCtrl = TextEditingController(text: '');
     bool isFasting = item.isFasting == 1;
     final now = DateTime.now();
-    final _symptomList = ['精神萎靡', '食欲不振', '体重下降', '腹泻', '呼吸困难', '打喷嚏', '眼部红肿'];
+    // 从服务端加载症状列表
+    final serverSymptoms = await _medicalService.getSymptoms();
+    final _symptomList = serverSymptoms.map((s) => s['name'] as String).toList();
     final notesCtrl = TextEditingController(text: isFasting ? '' : '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')} 未空腹');
     String? photoPath;
     String? _selectedSymptomName; // null=正常, else=选中症状
@@ -154,7 +156,7 @@ class _HomeTaskScreenState extends State<HomeTaskScreen> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setDialogState) {
-          final hasSymptom = _selectedSymptomName != null && !isFasting;
+          final hasSymptom = _selectedSymptomName != null;
           return Dialog(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 520),
