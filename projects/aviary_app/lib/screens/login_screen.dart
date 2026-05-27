@@ -27,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final username = _usernameCtrl.text.trim();
     final password = _passwordCtrl.text.trim();
     if (username.isEmpty || password.isEmpty) {
-      setState(() => _error = '请输入用户名和密码');
+      _showError('请输入用户名和密码');
       return;
     }
 
@@ -40,11 +40,26 @@ class _LoginScreenState extends State<LoginScreen> {
       if (result.success) {
         Navigator.of(context).pushReplacementNamed('/home');
       } else {
-        setState(() { _error = result.error; _loading = false; });
+        _showError(result.error ?? '登录失败');
+        setState(() => _loading = false);
       }
     } catch (e) {
       if (!mounted) return;
-      setState(() { _error = friendlyError(e).message; _loading = false; });
+      _showError(friendlyError(e).message);
+      setState(() => _loading = false);
+    }
+  }
+
+  void _showError(String msg) {
+    setState(() => _error = msg);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(msg),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 4),
+        ),
+      );
     }
   }
 
@@ -104,7 +119,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 if (_error != null) ...[
                   const SizedBox(height: 16),
-                  Text(_error!, style: const TextStyle(color: Colors.red)),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.red[50],
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.red[200]!),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.error_outline, color: Colors.red[700], size: 18),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(_error!, style: TextStyle(color: Colors.red[700], fontSize: 14)),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
                 const SizedBox(height: 24),
                 SizedBox(
