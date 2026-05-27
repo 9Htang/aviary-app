@@ -7,7 +7,8 @@ workspace/
 ├── projects/
 │   ├── aviary/       # 🦜 鸟舍管理系统 — Express + SQLite
 │   ├── aviary_app/   # 📱 鸟舍管理手机端 — Flutter
-│   └── med_calc/     # 🩺 鹦鹉药物计算器 — Flutter
+│   ├── med_calc/     # 🩺 鹦鹉药物计算器 — Flutter
+│   └── WeightNest/   # ⚖️ 体重记录 App — Flutter (Codemagic iOS+Android)
 ├── memory/
 ├── node_modules/
 └── AGENTS.md, SOUL.md...
@@ -17,57 +18,19 @@ workspace/
 aviary 远程：github.com/9Htang/parrot-manager
 aviary_app 远程：github.com/9Htang/aviary-app
 med_calc 远程：github.com/9Htang/med-calc
+WeightNest 远程：github.com/9Htang/WeightNest
 
-## 鸟舍管理系统（2026-05-23 起）
-
-### 核心任务
-渐进式重构 aviary/，按 `AVIARY_ROADMAP.md` 路线图推进。
-截至 2026-05-23 已完成第 1–7 阶段。
-
-### 完成路线图阶段
-
-| # | 阶段 | 关键成果 |
-|---|------|---------|
-| 1️⃣ | 拆分 server.js | config/db.js + routes/ 分离 |
-| 2️⃣ | Repository 层 | 4 个 repo，路由零残留 `db.prepare`（原来 159 处） |
-| 3️⃣ | Service 层 | routes → services → repos 三层调用链 |
-| 4️⃣ | 错误处理中间件 | 404/500 统一处理，JSON/HTML 自动判断 |
-| 5️⃣ | API 返回统一 | sendSuccess/sendFail 双兼容格式 |
-| 6️⃣ | 表单验证 | Zod + 自定义 validate 函数 |
-| 7️⃣ | 模块化目录 | 按领域分组：modules/birds/rooms/breeding/genetics |
-
-### 完成的 UI 改进
-- **Nav 组件化**：8 个页面统一引用 `partials/topbar.ejs`
-- **搜索栏修复**：按钮同行、宽度约束
-- **鸟房页面优化**：列表页 hover/间距/响应式；详情页表格→卡片
-- **鸟详情页补顶栏**
-
-### 2026-05-25 手机端 v1.0.5
-- 解决 Android 明文 HTTP 限制（`usesCleartextTraffic` + `INTERNET`）
-- 手动 Session Cookie 管理（`dart:io HttpClient`）
-- 保持登录（SharedPreferences 持久化登录态+cookie）
-- 日历中文（`flutter_localizations`）
-- 称重工作流：记录完自动下一只
-- 同小时称重自动覆盖
-- 喂药确认弹窗
-- 按钮布局：❌右上退出 / 左下跳过 / 右下记录并继续
-- 版本号 v1.0.5 + 版本追踪
-
-### 服务端新增
-- `/download/:file` 下载路由（公开，Cache-Control: no-cache）
-- 动态文件名：`aviary-v{version}.apk` 防缓存
+- 单个 session 只处理一个功能
+- 超过20轮必须新建 session
+- 不允许回传完整文件
+- 不允许回传完整 build log
+- 修改代码优先 summary 而不是 full diff
+- 失败后停止，不要自动重试
 
 ### wiki 文档
 - `wiki/aviary-project.md` — 项目总文档
 - `wiki/aviary-app-dev.md` — 手机端开发指南
 - `wiki/_index.md` — 索引
-
-### 启动命令
-```
-cd projects\aviary && node server.js
-访问 http://127.0.0.1:3456
-重启: projects\aviary\restart.bat
-```
 
 ### 仓库
 https://github.com/9Htang/parrot-manager.git
@@ -91,3 +54,15 @@ https://github.com/9Htang/parrot-manager.git
 
 摄像头架构（Phase 12）、公网部署、硬件相关找他。
 首次提及：2026-05-24
+
+## 计划变更
+遇到问题需要改变计划先问小豆，不要擅自修改方案
+
+## ⛔ 铁律：禁止擅自改方案
+遇到任何障碍（包冲突、编译失败、环境问题等），必须先：
+1. 列出 2-3 个可行选项
+2. 等小豆选择
+3. 再动手
+严禁自己替小豆做决定。
+今天已犯两次（PG→SQLite、砍扫码），记在这里永久提醒。
+

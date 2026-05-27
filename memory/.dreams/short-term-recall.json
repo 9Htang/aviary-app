@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-23T17:46:00.566Z",
+  "updatedAt": "2026-05-27T11:17:14.436Z",
   "entries": {
     "memory:memory/2026-05-20.md:1:36": {
       "key": "memory:memory/2026-05-20.md:1:36",
@@ -103,13 +103,13 @@
       "endLine": 59,
       "source": "memory",
       "snippet": "### 配置位置 主配置：`C:\\Users\\Cwb\\.openclaw\\openclaw.json` 工作区：`C:\\Users\\Cwb\\.openclaw\\workspace` 网页应用：`workspace/aviary/` ### 关键命令 - 启动服务：`cd aviary && node server.js` - 查鸟：`node lookup.js <脚环/名字>` - 数据库文件：`aviary/aviary.db` - 迁移数据库用 migrate*.js 脚本（注意不要用 taskkill 全局杀 node）",
-      "recallCount": 12,
+      "recallCount": 13,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 5.652287808060646,
+      "totalScore": 6.1121838063001634,
       "maxScore": 0.5139369338750839,
       "firstRecalledAt": "2026-05-20T08:02:02.509Z",
-      "lastRecalledAt": "2026-05-22T20:13:01.721Z",
+      "lastRecalledAt": "2026-05-26T19:01:28.494Z",
       "queryHashes": [
         "edb872f7b628",
         "348f88f3f392",
@@ -122,13 +122,15 @@
         "1c1d440d246a",
         "d3b9efe55ec5",
         "f8151cfc9b15",
-        "1aff7fe510d6"
+        "1aff7fe510d6",
+        "08e9207358c3"
       ],
       "recallDays": [
         "2026-05-20",
         "2026-05-21",
         "2026-05-22",
-        "2026-05-23"
+        "2026-05-23",
+        "2026-05-27"
       ],
       "conceptTags": [
         "openclaw.json",
@@ -227,13 +229,13 @@
       "endLine": 34,
       "source": "memory",
       "snippet": "# 2026-05-22 日志 ## 重大改动 ### 🌱 生长阶段系统 - 实现 7 个阶段：裸雏期→针羽期→正羽期→齐羽期→离巢期→幼鸟期→成鸟期 - 覆盖 4 个品种：虎皮鹦鹉、牡丹鹦鹉、太平洋鹦鹉、玄凤鹦鹉 - 品种特异性配对年龄（虎皮6m/牡丹8m/太平洋8m/玄凤12m） - 首页卡片 + 详情页显示阶段标签和天数 ### 🐣 出壳自动生雏鸟 - 蛋状态改为「出壳」时自动创建鸟卡片 - 自动继承父母信息、品种、来源标记 - 记录到 offspring 表 - 补全脚本 `archive/patch-hatched-eggs.js`：对已有出壳蛋批量创建雏鸟 ### 🔗 蛋↔鸟双向链接 - 鸟详情页 → 显示「🥚 来源蛋」链接 - 蛋卡片 → 出壳蛋显示「🐦 鸟名」链接 - 蛋高亮 → 从鸟页跳转时目标蛋黑色边框高亮 + 自动滚动 ### 🎯 AJAX 化蛋操作 - 新增蛋改成 fetch + JSON 返回 + JS 插入卡片 - 编辑蛋改成 fetch + JSON 返回 + JS 替换卡片 - 删除蛋改成 fetch + JSON 返回 + JS 移除卡片 - 失败时自动回退到传统表单提交 ### 📐 卡片布局优化 - flex 等高布局，底部填满不露白 - 窝号从大到小排列（clutch_number DESC） - 新一窝按钮移到顶部标题栏右侧 - 新增/编辑/删除蛋后自动锚点定位 ### 🛠️ 基础设施",
-      "recallCount": 7,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3.475872591137886,
+      "totalScore": 3.997134041786194,
       "maxScore": 0.5413974255323409,
       "firstRecalledAt": "2026-05-22T17:02:59.806Z",
-      "lastRecalledAt": "2026-05-23T17:46:00.566Z",
+      "lastRecalledAt": "2026-05-27T11:17:14.436Z",
       "queryHashes": [
         "1c1d440d246a",
         "df948240d423",
@@ -241,11 +243,13 @@
         "1aff7fe510d6",
         "421d20b9c8e4",
         "6ff0c7a68aa9",
-        "84710da654eb"
+        "84710da654eb",
+        "ca1db420ffbf"
       ],
       "recallDays": [
         "2026-05-23",
-        "2026-05-24"
+        "2026-05-24",
+        "2026-05-27"
       ],
       "conceptTags": [
         "虎皮6m/牡丹8m/太平洋8m/玄凤12m",
@@ -330,18 +334,20 @@
       "endLine": 53,
       "source": "memory",
       "snippet": "# 2026-05-23 日志 ## 渐进式重构（完成 Phase 1–7） ### Phase 1: 拆分 server.js ✅ - config/db.js 独立 - 路由拆分到 routes/ ### Phase 2: Repository 层 ✅ - 4 个 repo 文件覆盖所有 SQL - 路由层零残留 db.prepare（从 159 处归零） ### Phase 3: Service 层 ✅ - routes → services → repos 三层链 - 业务逻辑全部从路由移入 service ### Phase 4: 错误处理中间件 ✅ - middleware/errorHandler.js - 自动区分 API(JSON) 和页面(HTML) 404/500 处理 - views/error.ejs 错误页 ### Phase 5: API 返回统一 ✅ - utils/apiResponse.js：sendSuccess/sendFail - 双兼容格式：{ success, ok, data, error } ### Phase 6: 表单验证 ✅ - 安装 Zod - schemas/birdSchema.js + roomSchema.js - 路由入口验证 ### Phase 7: 模块化目录 ✅ - modules/birds / rooms / breeding / genetics - 每个模块 index.js 聚合 routes/service/repo/schema - server.js 从 modules/",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.48352395892143246,
+      "totalScore": 0.9114456564188003,
       "maxScore": 0.48352395892143246,
       "firstRecalledAt": "2026-05-23T17:46:00.566Z",
-      "lastRecalledAt": "2026-05-23T17:46:00.566Z",
+      "lastRecalledAt": "2026-05-26T19:01:28.494Z",
       "queryHashes": [
-        "84710da654eb"
+        "84710da654eb",
+        "08e9207358c3"
       ],
       "recallDays": [
-        "2026-05-24"
+        "2026-05-24",
+        "2026-05-27"
       ],
       "conceptTags": [
         "server.js",
@@ -361,18 +367,21 @@
       "endLine": 88,
       "source": "memory",
       "snippet": "### Phase 1: 拆分 server.js ✅ - config/db.js 独立 - 路由拆分到 routes/ ### Phase 2: Repository 层 ✅ - 4 个 repo 文件覆盖所有 SQL - 路由层零残留 db.prepare（从 159 处归零） ### Phase 3: Service 层 ✅ - routes → services → repos 三层链 - 业务逻辑全部从路由移入 service ### Phase 4: 错误处理中间件 ✅ - middleware/errorHandler.js - 自动区分 API(JSON) 和页面(HTML) 404/500 处理 - views/error.ejs 错误页 ### Phase 5: API 返回统一 ✅ - utils/apiResponse.js：sendSuccess/sendFail - 双兼容格式：{ success, ok, data, error } ### Phase 6: 表单验证 ✅ - 安装 Zod - schemas/birdSchema.js + roomSchema.js - 路由入口验证 ### Phase 7: 模块化目录 ✅ - modules/birds / rooms / breeding / genetics - 每个模块 index.js 聚合 routes/service/repo/schema - server.js 从 modules/ 加载 ### Phase 8: 登录权限系统 ✅ + 三种角色：admin /",
-      "recallCount": 1,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.47943057417869567,
-      "maxScore": 0.47943057417869567,
+      "totalScore": 1.4218737483024597,
+      "maxScore": 0.5152022749185562,
       "firstRecalledAt": "2026-05-23T17:46:00.566Z",
-      "lastRecalledAt": "2026-05-23T17:46:00.566Z",
+      "lastRecalledAt": "2026-05-27T11:17:14.436Z",
       "queryHashes": [
-        "84710da654eb"
+        "84710da654eb",
+        "08e9207358c3",
+        "ca1db420ffbf"
       ],
       "recallDays": [
-        "2026-05-24"
+        "2026-05-24",
+        "2026-05-27"
       ],
       "conceptTags": [
         "server.js",
@@ -392,18 +401,20 @@
       "endLine": 101,
       "source": "memory",
       "snippet": "+ activity_logs 表，自动记录关键操作 + 日志查看页面（admin 后台，分页） ### Phase 10: 数据备份 ✅ + 手动/自动备份（启动时 + 每天凌晨3点） + 智能清理（保留7天 + 每月1号） ### 访客模式改进 - 未登录可直接浏览所有页面（游客模式） - 退出登录后跳转首页，而非登录页 - 访客看不到任何编辑/删除/新增按钮 - 登录按钮固定在导航栏最右侧 ### 已修复 bug - `birdRepo.updateBirdPhoto` 函数名错误→`updateImage` - 图片上传路径双重 `/static/uploads/` 前缀 - 裁切上传 302 跳转导致 fetch 崩溃 - `Date.now()` session secret 导致重启全部掉登录 ### 待做（Phase 11–14） 图片系统独立 / 摄像头升级 / genetics 独立 / 未来路线",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.47273271977901454,
+      "totalScore": 0.9017512589693069,
       "maxScore": 0.47273271977901454,
       "firstRecalledAt": "2026-05-23T17:46:00.566Z",
-      "lastRecalledAt": "2026-05-23T17:46:00.566Z",
+      "lastRecalledAt": "2026-05-26T19:01:28.494Z",
       "queryHashes": [
-        "84710da654eb"
+        "84710da654eb",
+        "08e9207358c3"
       ],
       "recallDays": [
-        "2026-05-24"
+        "2026-05-24",
+        "2026-05-27"
       ],
       "conceptTags": [
         "备份",
@@ -414,6 +425,294 @@
         "static/uploads",
         "date.now",
         "自动"
+      ]
+    },
+    "memory:memory/2026-05-26.md:87:106": {
+      "key": "memory:memory/2026-05-26.md:87:106",
+      "path": "memory/2026-05-26.md",
+      "startLine": 87,
+      "endLine": 106,
+      "source": "memory",
+      "snippet": "### WeightNest 新项目（全部 8 阶段完成） - **定位**：独立鹦鹉体重记录移动端 App（iOS+Android） - **仓库**：github.com/9Htang/WeightNest - **技术栈**：Flutter 3.27 + drift (SQLite) + shelf (嵌入式服务器) + Riverpod - **阶段完成**： 1. 项目骨架 + 6 张表（Species/Rooms/Users/Birds/Weights/Tasks） 2. 6 个 Repository 层（含 JOIN 查询、同小时覆盖、拖拽排序） 3. Shelf 嵌入式服务器（18 个 REST API 端点） 4. 快速称重页面（大键盘、自动下一只、+/-快速调整） 5. 鹦鹉列表（拖动排序、按房间筛选、搜索）+ 鸟详情（CustomPaint 体重曲线） 6. 任务自动生成 + 异常检测（体重下降/增长停滞/超期未称重） 7. 局域网联机（服务器/客户端模式、HTTP 同步、去重合并） 8. Excel 导出（5 个 sheet）+ Codemagic 配置 ### drift 踩坑 - `insert()` 用裸值，`write()` 才用 `Value<>` 包装（API 不一致） - 生成的数据类名：`Species` → `Specy`，`Users` → `User`（单数化） - `isBetweenValues` 不存在 → 用 `isBiggerOrEqualValue` + `isSmallerThanVa",
+      "recallCount": 4,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2.0445165663957594,
+      "maxScore": 0.5512130707502365,
+      "firstRecalledAt": "2026-05-26T19:43:21.089Z",
+      "lastRecalledAt": "2026-05-27T11:17:14.436Z",
+      "queryHashes": [
+        "231b4fe47ee4",
+        "2c617b74248d",
+        "f095537e8416",
+        "ca1db420ffbf"
+      ],
+      "recallDays": [
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "github.com/9htang/weightnest",
+        "3.27",
+        "体重下降/增长停滞/超期未称重",
+        "服务器/客户端模式",
+        "weightnest",
+        "项目",
+        "全部",
+        "阶段"
+      ]
+    },
+    "memory:memory/2026-05-27-0222.md:135:167": {
+      "key": "memory:memory/2026-05-27-0222.md:135:167",
+      "path": "memory/2026-05-27-0222.md",
+      "startLine": 135,
+      "endLine": 167,
+      "source": "memory",
+      "snippet": "| ⭐ WiFi AP 隔离 | 路由器开启了\"AP 隔离\"——设备间互相看不见，UDP 广播被阻断 | | ⭐⭐⭐ 防火墙 | Windows 防火墙阻止了 UDP 8082 入站 | | ⭐⭐ 端口占用 | 8082 被其他程序占用，bind 无声失败 | | ⭐ 网段不同 | 手机连的 2.4G WiFi，电脑连的 5G WiFi（有些路由是隔离的） | **建议先做诊断：** 我在设置页加一个\"网络诊断\"按钮，显示当前检测到的所有 IP、接口名、UDP 端口状态。你看下诊断结果，我根据实际数据改。 **你觉得先搞哪个？** user: Conversation info (untrusted metadata): ```json { \"chat_id\": \"qqbot:c2c:AB586DEAD7326851A4E58525A6CCF01F\", \"message_id\": \"ROBOT1.0_EZKFUwCDJZQj9xAwZf4e0S7yE.kkbS2xt-k4wuJ5T93N-kOOPdGbgSP3nN6sH.VVTPj2i0.TYEv8y7azzCctVBcbASgFd9.ahn-i8UOMWow!\", \"sender_id\": \"AB586DEAD7326851A4E58525A6CCF01F\", \"sender\": \"AB586DEAD7326851A4E58525A6CCF01F\", \"timestamp\": \"Wed 2026-05-27 01:41 GMT+8\" } ``` Sender (untrusted metadata)",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.9988902062177657,
+      "maxScore": 0.5001134157180785,
+      "firstRecalledAt": "2026-05-26T19:43:21.089Z",
+      "lastRecalledAt": "2026-05-26T20:16:28.750Z",
+      "queryHashes": [
+        "231b4fe47ee4",
+        "2c617b74248d"
+      ],
+      "recallDays": [
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "路由器",
+        "网络",
+        "2026-05-27-0222.md",
+        "2.4g",
+        "chat-id",
+        "message-id",
+        "sender-id",
+        "wifi"
+      ]
+    },
+    "memory:memory/2026-05-27-0222.md:107:139": {
+      "key": "memory:memory/2026-05-27-0222.md:107:139",
+      "path": "memory/2026-05-27-0222.md",
+      "startLine": 107,
+      "endLine": 139,
+      "source": "memory",
+      "snippet": "而且关掉梯子之后仍然无法连接，检查下原因 遇到问题需要改变计划先问我，需要下载什么我帮你下载 assistant: 两个问题分开看： --- ## 📁 Excel 共享 **v1.7.3 已改路径** → `/storage/emulated/0/Download/`（文件管理器直接可见）。但 `share_plus` 因为 AGP 版本冲突没装成——上次降级到 8.3 后构建死循环。 **建议方案：** 不用 `share_plus`，改用 Android 原生 `Intent` 分享（零依赖）： ```dart import 'android.content.Intent'; import 'androidx.core.content.FileProvider'; ``` 或者更简单——导出完直接打开系统文件管理器到 Download 目录，用户自己长按分享。Flutter 有 `open_filex` 或 `open_file` 包可以做到。 **你倾向哪个？** ① 原生 Intent 分享 / ② 打开文件管理器 / ③ 不管了保持现状 --- ## 🔍 局域网扫描仍失败 已排除 VPN 干扰。可能原因按概率排序： | 可能性 | 原因 | |--------|------| | ⭐ WiFi AP 隔离 | 路由器开启了\"AP 隔离\"——设备间互相看不见，UDP 广播被阻断 | | ⭐⭐⭐ 防火墙 | Windows 防火墙阻止了 UDP 8082 入站 | | ⭐⭐ 端口占用 | 8082 被其他程序占用，bind 无声失败 | | ⭐",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.9890298962593078,
+      "maxScore": 0.4986805975437164,
+      "firstRecalledAt": "2026-05-26T19:43:21.089Z",
+      "lastRecalledAt": "2026-05-26T20:16:28.750Z",
+      "queryHashes": [
+        "231b4fe47ee4",
+        "2c617b74248d"
+      ],
+      "recallDays": [
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "路由器",
+        "2026-05-27-0222.md",
+        "v1.7.3",
+        "storage/emulated/0/download",
+        "share-plus",
+        "8.3",
+        "android.content.intent",
+        "open-filex"
+      ]
+    },
+    "memory:memory/2026-05-26.md:74:92": {
+      "key": "memory:memory/2026-05-26.md:74:92",
+      "path": "memory/2026-05-26.md",
+      "startLine": 74,
+      "endLine": 92,
+      "source": "memory",
+      "snippet": "1. **编辑按钮无反应**：`bird.ejs` 中 `function toggleMateSectionfunction toggleMateSection()` 语法错误导致整个 script 块崩 - 连带：`getElementById('mateSection')` → `mateField`，`origBreedingStatus` 未定义 2. **配偶弹窗被编辑弹窗遮挡**：z-index `mateModal:999` < `editModal:1000` → 改为 1001 3. **PC端导航栏双重显示**：`topbar.ejs` 的 `@media (max-width:768px)` 少一个闭合 `}`，导致桌面端隐藏规则被错误嵌套 4. **病历展开缺时间轴录入**：`bird.ejs` 行内病历只有展示无表单，从 `medical.ejs` 移植了症状时间轴录入口 5. **Typo**：`'疗治中'` → `'治疗中'` ### 每日复盘 Cron（未完全解决） - 想设 23:30 自动复盘 → CLI `cron add` 遇 scope upgrade pending approval - 尝试多种方式：gateway call、手动写 jobs.json、config 添加 gateway.remote.token - 根因：CLI 设备只有 `operator.read`，创建 cron 需要 `operator.write` - 状态：**未解决**，scope 审批流程需要浏览器控制面板手动加权限 ### Weigh",
+      "recallCount": 4,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.9959618732333184,
+      "maxScore": 0.5483891054987907,
+      "firstRecalledAt": "2026-05-26T19:43:21.089Z",
+      "lastRecalledAt": "2026-05-27T11:17:14.436Z",
+      "queryHashes": [
+        "231b4fe47ee4",
+        "2c617b74248d",
+        "f095537e8416",
+        "ca1db420ffbf"
+      ],
+      "recallDays": [
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "gateway",
+        "bird.ejs",
+        "z-index",
+        "topbar.ejs",
+        "max-width",
+        "medical.ejs",
+        "jobs.json",
+        "gateway.remote.token"
+      ]
+    },
+    "memory:memory/2026-05-25.md:27:54": {
+      "key": "memory:memory/2026-05-25.md:27:54",
+      "path": "memory/2026-05-25.md",
+      "startLine": 27,
+      "endLine": 54,
+      "source": "memory",
+      "snippet": "- 最终关闭专用网络防火墙阻塞 - 确认 USB 网络共享、WiFi 直连的 IP 连通性 ## 下午 ### GitHub 仓库 - **aviary_app** → 新建独立仓库 `github.com/9Htang/aviary-app`，代码已推送 - **MEMORY.md 更新**：项目结构增加 aviary_app 条目 ### Wiki 文档 - `wiki/aviary-project.md` — 鸟舍总文档（后端+手机端+API+网络拓扑+版本历史） - `wiki/aviary-app-dev.md` — Flutter 开发指南（构建+配置+规范） - `wiki/med-calc-project.md` — 药物计算器项目概览 - `wiki/_index.md` — 索引 ### 友好错误系统（v1.0.5） - 创建 `utils/error_helper.dart` - `friendlyError(e)` 函数：将异常转换为中文消息 - 连接拒绝 → \"无法连接到服务器\" - 连接超时 → \"连接超时\" - Socket 异常 → \"请检查手机和电脑是否在同一WiFi\" - 401 → \"登录已过期，请重新登录\" - 500 → \"服务器内部错误\" - API 业务错误 → 直接取服务端错误文本 - 其他 → \"操作失败，请稍后重试\" - 所有页面错误提示不再显示原始代码/异常 - 真实错误仍通过 `debugPrint` 输出到日志",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.4723228096961975,
+      "maxScore": 0.4723228096961975,
+      "firstRecalledAt": "2026-05-26T19:43:21.089Z",
+      "lastRecalledAt": "2026-05-26T19:43:21.089Z",
+      "queryHashes": [
+        "231b4fe47ee4"
+      ],
+      "recallDays": [
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "网络",
+        "aviary-app",
+        "github.com/9htang/aviary-app",
+        "memory.md",
+        "wiki/aviary-project.md",
+        "wiki/aviary-app-dev.md",
+        "wiki/med-calc-project.md",
+        "index.md"
+      ]
+    },
+    "memory:memory/2026-05-27-0222.md:36:72": {
+      "key": "memory:memory/2026-05-27-0222.md:36:72",
+      "path": "memory/2026-05-27-0222.md",
+      "startLine": 36,
+      "endLine": 72,
+      "source": "memory",
+      "snippet": "这个命令会自动下载所有需要的文件，你不用手动下任何东西。就是网速慢的话要等几分钟。跑完告诉我输出结果就好。 user: Conversation info (untrusted metadata): ```json { \"chat_id\": \"qqbot:c2c:AB586DEAD7326851A4E58525A6CCF01F\", \"message_id\": \"ROBOT1.0_EZKFUwCDJZQj9xAwZf4e0cLP-8HA77JCHYzJmvNqyRaNTpzCFFBCmZOgGbNflR5OQxNGuu0bWhus7l-y3vhIvRcbASgFd9.ahn-i8UOMWow!\", \"sender_id\": \"AB586DEAD7326851A4E58525A6CCF01F\", \"sender\": \"AB586DEAD7326851A4E58525A6CCF01F\", \"timestamp\": \"Wed 2026-05-27 01:13 GMT+8\" } ``` Sender (untrusted metadata): ```json { \"label\": \"AB586DEAD7326851A4E58525A6CCF01F\", \"id\": \"AB586DEAD7326851A4E58525A6CCF01F\" } ``` 我构建好了 assistant: 收到，提交。 assistant: **v1.7.3 已推送** ✅ `releases/WeightNest-v1.7.3.apk` **本次修复：** | # | 修复 |",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.9366541355848312,
+      "maxScore": 0.46863927245140075,
+      "firstRecalledAt": "2026-05-26T20:16:28.750Z",
+      "lastRecalledAt": "2026-05-27T05:54:27.379Z",
+      "queryHashes": [
+        "2c617b74248d",
+        "f095537e8416"
+      ],
+      "recallDays": [
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "2026-05-27-0222.md",
+        "chat-id",
+        "message-id",
+        "sender-id",
+        "v1.7.3",
+        "releases/weightnest-v1.7.3.apk",
+        "这个",
+        "命令"
+      ]
+    },
+    "memory:memory/2026-05-27-0222.md:273:293": {
+      "key": "memory:memory/2026-05-27-0222.md:273:293",
+      "path": "memory/2026-05-27-0222.md",
+      "startLine": 273,
+      "endLine": 293,
+      "source": "memory",
+      "snippet": "同一天所有记录全部导出，按时间升序排列： HH:mm 体重 HH:mm 体重 示例： 08:10 42.1g 12:30 42.6g 18:05 42.3g 5. 规则说明 ✔ 按月份导出（自动适配28/29/30/31天） ✔ 同一天多个记录全部保留 ✔ 按时间排序 ✔ 无数据留空 ❌ 不去重 ❌ 不做平均或筛选 6. 输出目标 生成可用于查看与分析的“按月体重宽表Excel”。",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.4733496397733688,
+      "maxScore": 0.4733496397733688,
+      "firstRecalledAt": "2026-05-27T05:54:27.379Z",
+      "lastRecalledAt": "2026-05-27T05:54:27.379Z",
+      "queryHashes": [
+        "f095537e8416"
+      ],
+      "recallDays": [
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "2026-05-27-0222.md",
+        "42.1g",
+        "42.6g",
+        "42.3g",
+        "自动适配28/29/30/31天",
+        "同一",
+        "所有",
+        "记录"
+      ]
+    },
+    "memory:memory/2026-05-27-0222.md:194:241": {
+      "key": "memory:memory/2026-05-27-0222.md:194:241",
+      "path": "memory/2026-05-27-0222.md",
+      "startLine": 194,
+      "endLine": 241,
+      "source": "memory",
+      "snippet": "你自己构建 user: Conversation info (untrusted metadata): ```json { \"chat_id\": \"qqbot:c2c:AB586DEAD7326851A4E58525A6CCF01F\", \"message_id\": \"ROBOT1.0_EZKFUwCDJZQj9xAwZf4e0aawxz0lfnJKSfn-ngITIyqzaOfFM4UicmWTmM9M4qOSDklPyA1I14sNUPyMaDmqGxcbASgFd9.ahn-i8UOMWow!\", \"sender_id\": \"AB586DEAD7326851A4E58525A6CCF01F\", \"sender\": \"AB586DEAD7326851A4E58525A6CCF01F\", \"timestamp\": \"Wed 2026-05-27 01:43 GMT+8\" } ``` Sender (untrusted metadata): ```json { \"label\": \"AB586DEAD7326851A4E58525A6CCF01F\", \"id\": \"AB586DEAD7326851A4E58525A6CCF01F\" } ``` 你自己构建 assistant: 编译成功 ✅ assistant: **v1.7.4 已推送** ✅ `releases/WeightNest-v1.7.4.apk` ``` 设置 → 数据导出 ┌──────────────────────────┐ │ [⬇ 导出 Excel] │",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.4609433978796005,
+      "maxScore": 0.4609433978796005,
+      "firstRecalledAt": "2026-05-27T05:54:27.379Z",
+      "lastRecalledAt": "2026-05-27T05:54:27.379Z",
+      "queryHashes": [
+        "f095537e8416"
+      ],
+      "recallDays": [
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "2026-05-27-0222.md",
+        "chat-id",
+        "message-id",
+        "sender-id",
+        "v1.7.4",
+        "releases/weightnest-v1.7.4.apk",
+        "自己",
+        "conversation"
+      ]
+    },
+    "memory:memory/2026-05-26.md:56:76": {
+      "key": "memory:memory/2026-05-26.md:56:76",
+      "path": "memory/2026-05-26.md",
+      "startLine": 56,
+      "endLine": 76,
+      "source": "memory",
+      "snippet": "- **汉堡菜单→侧滑抽屉**：checkbox hack → `position: fixed` 抽屉 82vw/320px + `rgba(0,0,0,0.45) + backdrop-filter: blur(4px)` 遮罩 - **分组标签**：主功能 / 系统 / 账户，`nav-group-label` 小字分组 - **header 紧凑**：`padding 20→14px`，字体 `17→15px` - **汉堡按钮轻量化**：`36→32px` ### 编辑模式优化 - **EJS 损坏修复**：`fix-*.js` 脚本的 `\\r\\n` vs `\\n` 差异导致 EJS 模板被替换成破损内容，裸露 `<%` 标签显示为文本。回退到 commit 5391755 恢复 - **表单分组**：`form-group > h4` 基础/状态/其他信息三段 - **父母选择→卡片**：`parent-chip` 整块可点击（高度44px、圆角12px、outline风格） - **按钮降权**：编辑/病历 `min-height 44→36px; border:none; transparent` - **编辑模式**：`body.editing` 隐藏 overview + 图片 + 病历按钮 - **取消按钮**：新增 outline 风格取消按钮 - **删除弱化**：outline 风格放到底部 - **体重 API**：`/bird/api/:id/weights`（复数 s） ## 下午 - Bug修复 + WeightNest 新项目 ###",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.5321083277463913,
+      "maxScore": 0.5321083277463913,
+      "firstRecalledAt": "2026-05-27T11:17:14.436Z",
+      "lastRecalledAt": "2026-05-27T11:17:14.436Z",
+      "queryHashes": [
+        "ca1db420ffbf"
+      ],
+      "recallDays": [
+        "2026-05-27"
+      ],
+      "conceptTags": [
+        "82vw/320px",
+        "0.45",
+        "backdrop-filter",
+        "nav-group-label",
+        "form-group",
+        "基础/状态/其他信息三段",
+        "parent-chip",
+        "编辑/病历"
       ]
     }
   }

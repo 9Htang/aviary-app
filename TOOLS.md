@@ -13,7 +13,23 @@ Things like:
 - Device nicknames
 - Anything environment-specific
 
-## Examples
+## 项目启动流程
+如果开始一个新的项目，则该项目文件夹内创建.agent文件夹
+  该.agent文件夹包含三个文件
+  1.SYSTEM.md 
+    你在做什么项目  
+    你的默认行为方式
+    永久不变的原则
+  2.MEMORY.md
+    项目做什么
+    当前进度
+    已完成功能
+    技术选型
+    已知问题
+  3.POLICY.md
+    AI必须遵守的规则 / 禁止做什么
+  直接向我进行提问将这些内容初始化
+  在关于该项目的会话中注入.agent下的文件
 
 ```markdown
 ### Cameras
@@ -81,6 +97,7 @@ projects/
 
 > med_calc 推 → github.com/9Htang/med-calc
 > aviary 推 → github.com/9Htang/parrot-manager
+
 
 ## Why Separate?
 

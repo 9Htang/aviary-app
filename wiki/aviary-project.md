@@ -1,122 +1,42 @@
-# 🦜 鸟舍管理系统 — Aviary
+# 🦜 鸟舍管理系统
 
-> Express + EJS + SQLite 后端管理系统，配套 Flutter 手机端
+## 项目概况
+Express + EJS + SQLite 鸟舍管理系统。渐进式重构中，已完成 1-12 阶段（截至 2026-05-26）。
 
-## 项目位置
+## 移动端 UI 状态（2026-05-26）
 
-```
-projects/aviary/       ← 后端 (Express + EJS + SQLite)
-projects/aviary_app/   ← 手机端 (Flutter)
-```
+### 导航栏
+- **桌面端**：横向 nav-right（新增/鸟房/基因/登录/管理+退出）
+- **移动端**：侧滑抽屉（82vw / max-width: 320px），checkbox hack 零 JS
+  - 分组：主功能 / 系统 / 账户
+  - 遮罩：`rgba(0,0,0,0.45) + backdrop-filter: blur(4px)`
+  - active 高亮：`.nav-link.active { background: #8b7355; color: #fff }`
 
-## 后端 (aviary)
+### 首页卡片
+- 3:4 图片比例
+- 信息：名字 + `羽色 · 年龄` + pill 标签（成鸟/幼鸟等）
+- 性别图标 26px（移动端 22px），右上角覆盖
+- 年龄格式：`1.1岁 / 3个月 / N天`
 
-### 技术栈
-- **运行时**: Node.js (Express)
-- **模板**: EJS
-- **数据库**: SQLite (better-sqlite3)
-- **端口**: 3456
-- **权限**: Session + Cookie (express-session + session-file-store)
+### 鸟详情页
+- **布局**：名字+环号→摘要行→按钮→照片→下方卡片
+- **摘要行**：`公 · 1.1岁 · 存活` / `绿花桃 · 已配对 · 1号繁殖间`
+- **按钮**：`btn-edit`（透明） + `btn-medical`（浅蓝），移动端 36px
+- **编辑模式**：`body.editing` 隐藏 overview 和照片，只显示分组表单
+  - 分组：基础信息 / 状态信息 / 其他信息
+  - 父母选择：`parent-chip` 卡片组件（44px、圆角12px）
+  - 按钮层级：删除(outline) / 取消(outline) / 保存(primary)
 
-### 启动
+### 病历页
+- 病历卡：折叠/展开、右上角编辑+痊愈按钮
+- 时间轴：scroll-snap + 渐隐遮罩 + 横向滑动
+- 添加条目：datetime-local 精确到分钟
+- T→空格渲染
 
-```bash
-cd projects/aviary
-restart.bat     # 或 node server.js
-访问 http://127.0.0.1:3456
-```
+## 服务端
+- 端口 3456
+- 启动：`cd projects\aviary && node server.js`
+- 重启：`restart.bat`
 
-### 默认账号
-- 用户名: `admin`
-- 密码: `admin123`
-
-### 目录结构
-```
-aviary/
-├── server.js            # 入口
-├── config/              # 数据库配置
-├── middleware/           # 认证/错误中间件
-├── models/              # 数据模型
-├── modules/             # 路由模块（按领域）
-│   ├── auth/            # 登录认证
-│   ├── admin/           # 管理后台
-│   ├── birds/           # 鸟只管理
-│   ├── rooms/           # 鸟房管理
-│   ├── breeding/        # 繁育管理
-│   └── genetics/        # 基因管理
-├── repositories/        # 数据访问层
-├── services/            # 业务逻辑层
-├── routes/              # 路由
-├── views/               # EJS 模板
-└── public/              # 静态文件
-```
-
-### API 接口
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| POST | `/api/login` | 登录 |
-| POST | `/api/logout` | 退出 |
-| GET | `/api/tasks` | 获取任务列表 |
-| GET | `/api/tasks/candidates` | 获取选鸟候选人 |
-| POST | `/api/tasks/generate` | 自动生成任务 |
-| POST | `/api/tasks` | 创建任务 |
-| PATCH | `/api/tasks/:id` | 更新任务 |
-| PATCH | `/api/tasks/items/:id` | 更新任务项 |
-| GET | `/api/bird/:id/weights` | 获取体重记录 |
-| POST | `/api/bird/:id/weight` | 记录体重 |
-
-### 已完成的迁移/重构
-- 模块化目录 (2026-05-23)
-- Repository + Service 层 (2026-05-23)
-- Zod 表单验证 (2026-05-23)
-- 统一 API 格式 sendSuccess/sendFail (2026-05-23)
-- APK 下载路由 /download/app.apk (2026-05-25)
-
-## 手机端 (aviary_app)
-
-### 技术栈
-- Flutter (Dart)
-- http + dart:io HttpClient
-- SharedPreferences (登录态持久化)
-- fl_chart (体重曲线)
-- flutter_localizations (中文)
-
-### 构建
-
-```bash
-cd projects/aviary_app
-flutter build apk --release
-# 输出: build/app/outputs/flutter-apk/app-release.apk
-```
-
-### 下载
-手机连接同一个 WiFi 后访问：
-```
-http://192.168.10.9:3456/download/aviary-v{version}.apk
-```
-
-### 版本历史
-| 版本 | 日期 | 变更 |
-|------|------|------|
-| v1.0.0 | 2026-05-23 | 初始版本 |
-| v1.0.3 | 2026-05-25 | 中文 + session 修复 + 称重弹窗 |
-| v1.0.4 | 2026-05-25 | 连续称重流程 + 按钮布局 |
-| v1.0.5 | 2026-05-25 | 版本号追踪 |
-
-### 功能说明
-- **保持登录**: 退出 APP 再进不需要重新登录
-- **今日任务**: 自动生成每日任务清单
-- **称重**: 点击任务项弹出称重输入，记录后自动下一只
-- **同小时覆盖**: 同一只鸟同一小时多次称重自动覆盖
-- **喂药**: 点击显示药物剂量，确认完成
-- **体重曲线**: 长按查看趋势图
-- **批量选鸟**: 手动添加任务项
-
-### 桌面端
-- 仓库: [github.com/9Htang/parrot-manager](https://github.com/9Htang/parrot-manager)
-
-## 网络拓扑
-- 电脑 IP: `192.168.10.9:3456`
-- 手机通过 WiFi 局域网访问
-- Windows 防火墙需放行 3456 端口
-- Android 需 `usesCleartextTraffic="true"` 支持 HTTP
+## 仓库
+- [github.com/9Htang/parrot-manager](https://github.com/9Htang/parrot-manager)
