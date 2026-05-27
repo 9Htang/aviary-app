@@ -30,6 +30,9 @@ class ApiClient {
     final uri = Uri.parse('$baseUrl$path').replace(queryParameters: query);
     final request = await _client.getUrl(uri);
     _addHeaders(request);
+    if (_sessionCookie != null) {
+      request.headers.set('cookie', _sessionCookie!);
+    }
     final response = await request.close();
     _saveCookies(response.headers);
     DevApiLogger.record('GET', path, response.statusCode, '');
